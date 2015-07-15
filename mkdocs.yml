@@ -1,0 +1,9 @@
+site_name: Introduction to mbed BLE
+
+docs_dir: Docs
+
+pages:
+- ['index.md','Introduction to Debugging']
+- ['Debugging/printf.md','Debugging', 'printf()']
+- ['Debugging/pyOCD.md','Debugging', 'pyOCD']
+- ['Debugging/Keil.md','Debugging', 'Keil uVision']
