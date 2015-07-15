@@ -51,7 +51,7 @@ Here's a very basic example. In the [URI Beacon program](../GettingStarted/URIBe
 This is the terminal output. Note that "waiting" is printed every time ``waitForEvent`` is triggered:
 
 <span style="text-align:center; display:block;">
-![](../InDepth/Images/TerminalOutput1.png)
+![](../Debugging/Images/TerminalOutput1.png)
 </span>
 
 

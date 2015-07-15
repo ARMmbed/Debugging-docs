@@ -17,7 +17,7 @@ The interface chip and the target microcontroller are connected over a serial wi
 The interface chip implements CMSIS-DAP. To drive the CMSIS-DAP interface chip over USB, you'll need to install the [pyOCD Python library](https://github.com/mbedmicro/pyOCD) on the development host.
 
 <span style="text-align:center; display:block;">
-![](../InDepth/Images/PyOCD1.png)
+![](../Debugging/Images/PyOCD1.png)
 </span>
 
 <span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">
