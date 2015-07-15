@@ -160,8 +160,10 @@ Here is an example implementation of a ring buffer. We’ve created our own vers
 	{
 		va_list args;
 		va_start(args, format);
-		size_t largestWritePossible = BUFFER_SIZE - (ringBufferTail - ringBufferStart);
-		int    written = vsnprintf(ringBufferTail, largestWritePossible, format, args);
+		size_t largestWritePossible = 
+				BUFFER_SIZE - (ringBufferTail - ringBufferStart);
+		int written = 
+				vsnprintf(ringBufferTail, largestWritePossible, format, args);
 		va_end(args);
 
 		if (written < 0) {
@@ -178,18 +180,22 @@ Here is an example implementation of a ring buffer. We’ve created our own vers
 		*/
 
 		if (written > largestWritePossible) {
-			/* There are no easy solutions to tackle this. It may be easiest to enlarge
+			/* There are no easy solutions to tackle this. It
+			* may be easiest to enlarge
 			* your BUFFER_SIZE to avoid this. */
-			return; /* this is a poor short-cut; you may want to do something else.*/
+			return; /* this is a short-cut; you may want to do something else.*/
 		}
 
 		ringBufferTail += written;
 
 		/* Is it time to wrap around? */
 		if (ringBufferTail > (ringBufferStart + HALF_BUFFER_SIZE)) {
-			size_t overflow = ringBufferTail - (ringBufferStart + HALF_BUFFER_SIZE);
-			memmove(ringBufferStart, ringBufferStart + HALF_BUFFER_SIZE, overflow);
-			ringBufferTail = ringBufferStart + overflow;
+			size_t overflow = 
+				ringBufferTail - (ringBufferStart + HALF_BUFFER_SIZE);
+				memmove(ringBufferStart, ringBufferStart 
+						+ HALF_BUFFER_SIZE, overflow);
+			ringBufferTail = 
+						ringBufferStart + overflow;
 		}
 	}
 

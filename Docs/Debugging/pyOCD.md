@@ -4,14 +4,12 @@ This article uses BLE as an example, but the techniques presented here are not B
 
 ##pyOCD-Based Debugging (GDB Server)
 
-<span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">
-**Note:** using GDB (or any other debugger) to connect to the GDB server is useful only if we have access to the program symbols and their addresses. This is currently *not* exported when building ``.hex`` files using the mbed online IDE. We therefore need to export our project to an offline toolchain to be able to generate either an ``.elf`` file that holds symbols alongside the program, or a ``.map`` file for symbols. In the following section, we're assuming an ``.elf`` file.
+<span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">**Note:** using GDB (or any other debugger) to connect to the GDB server is useful only if we have access to the program symbols and their addresses. This is currently *not* exported when building ``.hex`` files using the mbed online IDE. We therefore need to export our project to an offline toolchain to be able to generate either an ``.elf`` file that holds symbols alongside the program, or a ``.map`` file for symbols. In the following section, we're assuming an ``.elf`` file.
 </span>
 
 The interface chip and the target microcontroller are connected over a serial wire debug (SWD). This protocol offers debugging capabilities for stack trace analysis, register dumps and inspection of program execution (breakpoints, watchpoints etc). When combined with a source-level debugger on the development host, such as the GNU Project Debugger (GDB), SWD offers a very rich debugging experience - much more powerful than ``printf()``. 
 
-<span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">
-**Tip:** GDB is often "too rich" - don't forget the fast efficiency of ``printf()`` and the LEDs.
+<span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">**Tip:** GDB is often "too rich" - don't forget the fast efficiency of ``printf()`` and the LEDs.
 </span>
 
 The interface chip implements CMSIS-DAP. To drive the CMSIS-DAP interface chip over USB, you'll need to install the [pyOCD Python library](https://github.com/mbedmicro/pyOCD) on the development host.
@@ -20,16 +18,11 @@ The interface chip implements CMSIS-DAP. To drive the CMSIS-DAP interface chip o
 ![](../Debugging/Images/PyOCD1.png)
 </span>
 
-<span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">
-To install pyOCD, follow the [instructions](https://github.com/mbedmicro/pyOCD/blob/master/README.md#installation) to get the external USB libraries pyOCD relies on.
-<br /><br />
-**Notes:**
-<br />
-* You'll need to run ``setup.py`` for both the USB libraries and pyOCD. 
-<br />
-* You can follow [HOW_TO_BUILD.md](https://github.com/mbedmicro/pyOCD/blob/master/HOW_TO_BUILD.md) to see how to build pyOCD into a single executable GDB server program.
-<br />
-* A series of tests in the [test sub-folder](https://github.com/mbedmicro/pyOCD/tree/master/test) offers scripts that you may find useful as a foundation for developing custom interaction with the targets over CMSIS-DAP.
+<span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">To install pyOCD, follow the [instructions](https://github.com/mbedmicro/pyOCD/blob/master/README.md#installation) to get the external USB libraries pyOCD relies on.
+<br /><br />**Notes:**
+<br />* You'll need to run ``setup.py`` for both the USB libraries and pyOCD. 
+<br />* You can follow [HOW_TO_BUILD.md](https://github.com/mbedmicro/pyOCD/blob/master/HOW_TO_BUILD.md) to see how to build pyOCD into a single executable GDB server program.
+<br />* A series of tests in the [test sub-folder](https://github.com/mbedmicro/pyOCD/tree/master/test) offers scripts that you may find useful as a foundation for developing custom interaction with the targets over CMSIS-DAP.
 
 The GDB server can be launched by running ``gdb_server.py``. This script should be able to detect any connected mbed boards. Here is an example of executing the script from the terminal while a Nordic mKIT is connected:
 
