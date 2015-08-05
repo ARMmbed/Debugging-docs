@@ -7,3 +7,4 @@ pages:
 - ['Debugging/printf.md','Debugging', 'printf()']
 - ['Debugging/pyOCD.md','Debugging', 'pyOCD']
 - ['Debugging/Keil.md','Debugging', 'Keil uVision']
+- ['Debugging/debugging_microbit.md','Debugging', 'Debugging micro:bit']
