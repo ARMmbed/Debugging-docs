@@ -26,7 +26,7 @@ Note: Shell commands are prefixed with "$", GDB commands with "(gdb)"
 
 Let's start with a simple image for the micro:bit I received recently. It was
 supposed to print something on the serial output, but nothing appeared. You can
-find the hex file used in this tutorial at [hello.hex](hello.hex).
+find the hex file used in this tutorial at [hello.hex](http://jnz.fr/microbit/debugging/hello.hex).
 
 The following command will start pyOCD with a soothing configuration:
 
