@@ -14,11 +14,9 @@ pyOCD and GDB work just as well on Mac OS and Windows.
   * arm-none-eabi-gdb (7.9.1) is usually present in package managers, or you can get it at [linaro](https://launchpad.net/gcc-arm-embedded)
 
 
-### The hello.hex program
+### Looking at a basic program
 
-A simple program printing "hello world" to the serial console.
-
-You can find the hex file used in this tutorial at [hello.hex](https://github.com/iriark01/Debugging-docs/blob/master/Docs/Debugging/hello.hex).
+We'll be looking at hello.hex, a simple program printing "hello world" to the serial console. You can find the hex file at [hello.hex](https://github.com/iriark01/Debugging-docs/blob/master/Docs/Debugging/hello.hex).
 
 <span style="background-color:#E6E6E6;  border:1px solid #000;display:block; height:100%; padding:10px"> Note: Shell commands are prefixed with "$", GDB commands with "(gdb)"</span>
 
