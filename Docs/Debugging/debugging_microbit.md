@@ -4,8 +4,7 @@ This tutorial shows how to debug a simple program on the micro:bit. Using only
 GDB, we'll first try to understand what is happening on the chip and why the
 program doesn't follow the expected behaviour. We will then attempt to modify its behaviour by writing directly into the chip's memory.
 
-<span style="background-color:#E6E6E6;  border:1px solid #000;display:block; height:100%; padding:10px">
-Note: The micro:bit's processor is based on the Nordic [nRF51][nRF51].
+<span style="background-color:#E6E6E6;  border:1px solid #000;display:block; height:100%; padding:10px">Note: The micro:bit's processor is based on the Nordic [nRF51][nRF51].</span>
 
 For reference, here are the tools I'm using. This is only a suggestion, as
 pyOCD and GDB work just as well on Mac OS and Windows.
@@ -15,18 +14,18 @@ pyOCD and GDB work just as well on Mac OS and Windows.
   * arm-none-eabi-gdb (7.9.1) is usually present in package managers, or you can get it at [linaro](https://launchpad.net/gcc-arm-embedded)
 
 
-### hello.hex
+### The hello.hex program
 
 A simple program printing "hello world" to the serial console.
 
-<span style="background-color:#E6E6E6;  border:1px solid #000;display:block; height:100%; padding:10px">
-Note: Shell commands are prefixed with "$", GDB commands with "(gdb)"
+You can find the hex file used in this tutorial at [hello.hex](https://github.com/iriark01/Debugging-docs/blob/master/Docs/Debugging/hello.hex).
+
+<span style="background-color:#E6E6E6;  border:1px solid #000;display:block; height:100%; padding:10px"> Note: Shell commands are prefixed with "$", GDB commands with "(gdb)"</span>
 
 #### Analysis
 
 Let's start with a simple image for the micro:bit I received recently. It was
-supposed to print something on the serial output, but nothing appeared. You can
-find the hex file used in this tutorial at [hello.hex](http://jnz.fr/microbit/debugging/hello.hex).
+supposed to print something on the serial output, but nothing appeared. 
 
 The following command will start pyOCD with a soothing configuration:
 
@@ -43,7 +42,7 @@ The following command will start pyOCD with a soothing configuration:
 
 
 <span style="background-color:#E6E6E6;  border:1px solid #000;display:block; height:100%; padding:10px">Tip: if you don't have permission to access the board on Linux, you can use [this udev rule](https://developer.mbed.org/comments/perm/9920/).
-The option -bh tells pyOCD to use hardware breakpoints, and -r tells it to halt the target after a reset.
+The option -bh tells pyOCD to use hardware breakpoints, and -r tells it to halt the target after a reset.</span>
 
 By default, the server will listen for GDB commands on port 3333. It will
 transfer those commands by USB to the interface chip. The interface chip, a
