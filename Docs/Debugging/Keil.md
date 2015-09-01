@@ -112,3 +112,6 @@ Use the tool bar to add registers, memory, call stack, symbol and watch windows.
 ###Conclusion
 
 A simple firmware upgrade of your board enables the on-board programming interface to communicate with debugging tools over the new CMSIS-DAP protocol. Over time we hope this will mean mbed will become interoperable with a wide range of offline tools, proving professional debug capabilities when they are needed.
+
+______
+Copyright © 2015 ARM Ltd. All rights reserved.

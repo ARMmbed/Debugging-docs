@@ -435,3 +435,6 @@ Happy hacking!
 
 [nRF51]: https://www.nordicsemi.com/eng/Products/nRF51-Series-SoC "nRF51 reference manual"
 [AAPCS]: http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042e/IHI0042E_aapcs.pdf "ARM architecture procedure call standard"
+
+______
+Copyright © 2015 ARM Ltd. All rights reserved.
