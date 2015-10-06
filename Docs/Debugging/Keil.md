@@ -46,13 +46,13 @@ There will now be three mbed USB devices in device manager :
 
 <span style="background-color:lightyellow; color:black; display:block; height:100%; padding:10px">
 **Warning: Driver issue**
-<br /><br />
+<br />
 If the serial is not recognised by the host:
-<br />* Go into the device manager
-<br />* Right click on "mbed composite"
-<br />* Uninstall the driver
-<br />* Disconnect and connect your mbed
-<br />* Install the [serial driver](/Going_Further/Serial_Conf/)
+* Go into the device manager.
+* Right click on "mbed composite".
+* Uninstall the driver.
+* Disconnect and connect your mbed.
+* Install the [serial driver](/Going_Further/Serial_Conf/).
 </span>
 
 ##Install an offline tool
