@@ -44,9 +44,8 @@ There will now be three mbed USB devices in device manager :
 ![](../Debugging/Images/CMSIS1.png)
 </span>
 
-<span style="background-color:lightyellow; color:black; display:block; height:100%; padding:10px">
-**Warning: Driver issue**
-
+<span style="background-color:lightyellow; color:black; display:block; height:100%; padding:10px">**Warning: Driver issue**
+</br>
 If the serial is not recognised by the host:
 </br>1. Go into the device manager.
 </br>2. Right click on "mbed composite".
