@@ -200,7 +200,7 @@ program is indeed printing something.
 
 Before calling printf, the stack looks like this:
 
-![Representation of the stack](Images/stack.png)
+![Representation of the stack](../Debugging/Images/stack.png)
 
 The main function passes address 0x20003fe8 to printf in R1, which reads
 it and sends each character to the serial port until it reaches a \0. Knowing
