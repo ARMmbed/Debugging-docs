@@ -189,7 +189,7 @@ Let's add a library in the online compiler:
 
 1. In `main.cpp`, add a line to reference the library:
 
-``#include "GroveColourSensor/GroveColourSensor.h"``
+    ``#include "GroveColourSensor/GroveColourSensor.h"``
 
 1. Commit the change and publish the repository.
 
