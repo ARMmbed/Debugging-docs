@@ -7,6 +7,8 @@ mbed uses CMSIS-DAP as the protocol for debugging, but you need something on you
 1. Debugging with [Keil uVision](Debugging/Keil.md).
 1. Debugging the [micro:bit with pyOCD and GDB](Debugging/debugging_microbit.md)
 
+We also have a guide to [offline development and debugging](Debugging/offline.md).
+
 ## Links to other sources
 
 Our blog has [an article about using CMSIS-DAP to debug a device after it crashes](http://blog.mbed.com/post/139539984822/debugging-a-crashed-device-with-cmsis-dap).
