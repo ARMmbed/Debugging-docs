@@ -184,8 +184,7 @@ Let's add a library in the online compiler:
 1. Select *Import Library > From URL*
 1. Enter the URL https://developer.mbed.org/teams/Nespresso-RGB-Sensor/code/GroveColourSensor/.
 
-
-![Import library](Images/offline10.png)
+    ![Import library](Images/offline10.png)
 
 1. In `main.cpp`, add a line to reference the library:
 
