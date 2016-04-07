@@ -1,4 +1,4 @@
-# Offline development and debugging with mbed
+# Offline Development and Debugging with mbed
 
 At the heart of mbed we have an online compiler. While that is incredibly convenient for getting a project started or while prototyping, chances are that at some point you'll miss a debugger, or you'll want to develop while not having an active internet connection. Fortunately, we support exporting applications to a number of toolchains - including GCC, uVision and Eclipse - and committing source code back to the online environment. Combining the best of both the online and offline world.
 
