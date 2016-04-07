@@ -25,23 +25,23 @@ Let's start by writing a simple application in the [online compiler](https://dev
 1. Select your target (in this example we're using FRDM-K64F, but any target will work).
 1. Add the `mbed` library.
 1. Create a `main.cpp` file with the following content:
-
-```cpp
-#include "mbed.h"
-
-// if you're not using FRDM-K64F, change this line
-DigitalOut led(LED_RED);
-
-int main()
-{
-    while (true) {
-        led = !led; // toggle led
-        wait(0.2f);
+    
+    ```cpp
+    #include "mbed.h"
+    
+    // if you're not using FRDM-K64F, change this line
+    DigitalOut led(LED_RED);
+    
+    int main()
+    {
+        while (true) {
+            led = !led; // toggle led
+            wait(0.2f);
+        }
     }
-}
-```
+    ```
 
-Click  *Compile* and verify that your application builds as expected.
+1. Click  *Compile* and verify that your application builds as expected.
 
 ## Build the application with a local toolchain
 
