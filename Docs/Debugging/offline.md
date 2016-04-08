@@ -8,11 +8,15 @@ In this article we'll:
 * Show how to debug applications with your favourite IDE.
 * Explain how to sync online and offline code and libraries.
 
-## Requirements 
+## Requirements
 
 To follow along you'll need to have the following software installed on your local machine:
 
-* A build toolchain: either GCC and Make - which we explore here -  or [uVision](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/Keil/), [Eclipse](https://developer.mbed.org/cookbook/eclipse-for-building-and-debugging) or [Visual Studio](http://visualgdb.com/tutorials/arm/mbed/).
+* A build toolchain:
+    - GCC and Make - which we explore here
+    - Or [uVision](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/Keil/)
+    - Or [Eclipse](https://developer.mbed.org/cookbook/eclipse-for-building-and-debugging)
+    - Or [Visual Studio](http://visualgdb.com/tutorials/arm/mbed/)
 * [Mercurial](https://www.mercurial-scm.org/wiki/Download) (hg).
 
 <span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** On Windows you might want to install [Cygwin](https://www.cygwin.com) for GCC and make.</span>
@@ -25,12 +29,11 @@ Let's start by writing a simple application in the [online compiler](https://dev
 1. Select your target (in this example we're using FRDM-K64F, but any target will work).
 1. Add the `mbed` library.
 1. Create a `main.cpp` file with the following content:
-    
+
 ```cpp
 #include "mbed.h"
 
-// if you're not using FRDM-K64F, change this line
-DigitalOut led(LED_RED);
+DigitalOut led(LED1);
 
 int main()
 {
@@ -42,6 +45,8 @@ int main()
 ```
 
 Click  *Compile* and verify that your application builds as expected.
+
+<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Compile and Download](Images/offline12.png)</span>
 
 ## Build the application with a local toolchain
 
@@ -67,9 +72,9 @@ To get the build files we need, we use the online IDE to export a project to our
 
 For simplicity we'll be using GCC. Go back to the online compiler, right click on the project and select *Export*:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Exporting to desktop](Images/offline4.png)</span>
+<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Export menu](Images/offline13.png) ![Exporting to desktop](Images/offline4.png)</span>
 
-This generates a ZIP file that contains our source code, a Makefile and all the libraries we depend on (just one for now: `mbed`):
+This generates a ZIP file that contains our source code, a Makefile and all the libraries we depend on:
 
 <span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Content of the ZIP file](Images/offline5.png)</span>
 
@@ -87,19 +92,19 @@ We can now debug our application using [GDB](https://docs.mbed.com/docs/debuggin
 
 For instance, here I used the same approach to export to uVision 4 and start a debug session:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Debugging with uVision](Images/offline8.png)</span>
+<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Exporting to uVision](Images/offline14.png) ![Debugging with uVision](Images/offline8.png)</span>
 
 *Debugging with uVision 4 on the left, and syncing changes back to the online compiler on the right*
 
 ## Syncing changes back to the online compiler
 
-You can now edit the code locally. For instance, you can change how fast the LED blinks, or change the color of the LED. If you use the FRDM-K64F target, you could remove line 3 in `main.cpp` and replace it with:
+You can now edit the code locally. For instance, you can change how fast the LED blinks, or change the color of the LED. If your board has multiple LEDs, you could remove line 3 in `main.cpp` and replace it with:
 
 ```cpp
-DigitalOut led(LED_GREEN);
+DigitalOut led(LED2);
 ```
 
-Rebuild (call `make`) and flash the application to verify that your code compiles and works.
+Rebuild (run `make` in the project folder) and flash the application using drag and drop to verify that your code compiles and works.
 
 Now you can commit your changes back. Your code is automatically backed by the Mercurial repository that we created earlier, so before you can commit your changes you first need to configure Mercurial with your name and e-mail address:
 
@@ -150,6 +155,8 @@ $ hg push
 Now go back to the online compiler, right click on your project and select *Update* to pull in the changes you made locally:
 
 <span style="text-align:center;border:1px solid #000; display:block; height:100%; padding:10px;">![Updating your application](Images/offline6.png)</span>
+
+<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** By running *Update* you will remove any uncommitted changes from the project.</span>
 
 When you open `main.cpp` in the online compiler you'll see that our changes have made it back online:
 
@@ -309,5 +316,3 @@ Happy coding!
 ---
 
 *[Jan Jongboom](http://twitter.com/janjongboom) is Developer Evangelist IoT at ARM, and loves step-debugging.*
-
-
