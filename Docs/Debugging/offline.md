@@ -12,11 +12,11 @@ In this article we'll:
 
 To follow along you'll need to have the following software installed on your local machine:
 
-* A build toolchain:
-    - GCC and Make - which we explore here
-    - Or [uVision](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/Keil/)
-    - Or [Eclipse](https://developer.mbed.org/cookbook/eclipse-for-building-and-debugging)
-    - Or [Visual Studio](http://visualgdb.com/tutorials/arm/mbed/)
+* A build toolchain. Pick one of the following options:
+    - GCC and Make, which we explore here.
+    - [uVision](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/Keil/).
+    - [Eclipse](https://developer.mbed.org/cookbook/eclipse-for-building-and-debugging).
+    - [Visual Studio](http://visualgdb.com/tutorials/arm/mbed/).
 * [Mercurial](https://www.mercurial-scm.org/wiki/Download) (hg).
 
 <span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** On Windows you might want to install [Cygwin](https://www.cygwin.com) for GCC and make.</span>
