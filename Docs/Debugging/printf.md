@@ -33,11 +33,11 @@ Using ``printf()`` on mbed requires including the ``stdio`` header:
 
 ```c
 
-	#include <stdio.h>
+#include <stdio.h>
 
-	... some code ...
+... some code ...
 
-		printf("debug value %x\r\n", value);
+	printf("debug value %x\r\n", value);
 ```
 
 Here's a very basic example. In the [URI Beacon program](../GettingStarted/URIBeacon.md), we've added ``printf()`` in three places (this is too much for a real-life program):
@@ -80,47 +80,45 @@ Here is an example:
 
 ```c
 	
-	-- within some header file named something like trace.h --
-	enum {
-		TRACE_LEVEL_DEBUG,
-		TRACE_LEVEL_WARNING
-	};
-	/* each time we compile or run the program, 
-	* we determine what the trace level is.
-	* this parameter is available to the macros 
-	* without being explicitly passed to them*/
-	
-	extern unsigned traceLevel; 
+-- within some header file named something like trace.h --
+enum {
+	TRACE_LEVEL_DEBUG,
+	TRACE_LEVEL_WARNING
+};
+/* each time we compile or run the program, 
+* we determine what the trace level is.
+* this parameter is available to the macros 
+* without being explicitly passed to them*/
 
-	...
+extern unsigned traceLevel; 
 
-	// Our first macro is printed if the trace level we selected 
-	// is TRACE_LEVEL_DEBUG or above. 	
-	// The traceLevel is used in the condition                                            
-	// and the regular parameters are used in the action that follows the IF
-	#define TRACE_DEBUG(formatstring, parameter1, parameter2, ...) \
-		{ if (traceLevel >= TRACE_LEVEL_DEBUG) \
-				{ printf("-D- " formatstring, __VA_ARGS__); } } 
-	// this will include the parameters we passed above
+...
+
+// Our first macro is printed if the trace level we selected 
+// is TRACE_LEVEL_DEBUG or above. 	
+// The traceLevel is used in the condition                                            
+// and the regular parameters are used in the action that follows the IF
+#define TRACE_DEBUG(formatstring, parameter1, parameter2, ...) \
+	{ if (traceLevel >= TRACE_LEVEL_DEBUG) \
+			{ printf("-D- " formatstring, __VA_ARGS__); } } 
+// this will include the parameters we passed above
 	
-	// we create a different macro for each trace level
-	#define TRACE_WARNING(formatstring, parameter1, parameter2, ...) \
-		{ if (traceLevel >= TRACE_LEVEL_WARNING) \
-			{ printf("-W- " formatstring, __VA_ARGS__); } }
+// we create a different macro for each trace level
+#define TRACE_WARNING(formatstring, parameter1, parameter2, ...) \
+	{ if (traceLevel >= TRACE_LEVEL_WARNING) \
+		{ printf("-W- " formatstring, __VA_ARGS__); } }
 ```
 
 Here’s another example of macro-replacement that allows a formatted ``printf()``. Set ``#define MODULE_NAME "<YourModuleName>"`` before including the code below, and enjoy colourised ``printf()`` tagged with the module name that generated it:
 
 ```c
 
-
-
-	#define LOG(x, ...) \
-		{ printf("\x1b[34m%12.12s: \x1b[39m"x"\x1b[39;49m\r\n", \
-		MODULE_NAME, ##__VA_ARGS__); fflush(stdout); }
-	#define WARN(x, ...) \
-		{ printf("\x1b[34m%12.12s: \x1b[33m"x"\x1b[39;49m\r\n", \
-		MODULE_NAME, ##__VA_ARGS__); fflush(stdout); }
+#define LOG(x, ...) \
+	{ printf("\x1b[34m%12.12s: \x1b[39m"x"\x1b[39;49m\r\n", \
+	MODULE_NAME, ##__VA_ARGS__); fflush(stdout); }
+#define WARN(x, ...) \
+	{ printf("\x1b[34m%12.12s: \x1b[33m"x"\x1b[39;49m\r\n", \
+	MODULE_NAME, ##__VA_ARGS__); fflush(stdout); }
 
 ```
 
@@ -128,10 +126,10 @@ You can use ``ASSERT()`` to improve error reporting. It will use ``error()`` (a 
 
 ```c
 
-	#define ASSERT(condition, ...)	{ \
-		if (!(condition))	{ \
-			error("Assert: " __VA_ARGS__); \
-		} }
+#define ASSERT(condition, ...)	{ \
+	if (!(condition))	{ \
+		error("Assert: " __VA_ARGS__); \
+	} }
 
 ```
 
@@ -149,56 +147,56 @@ Here is an example implementation of a ring buffer. We’ve created our own vers
 ```c
 
 
-	#define BUFFER_SIZE 512 /* You need to choose a suitable value here. */
-	#define HALF_BUFFER_SIZE (BUFFER_SIZE >> 1)
+#define BUFFER_SIZE 512 /* You need to choose a suitable value here. */
+#define HALF_BUFFER_SIZE (BUFFER_SIZE >> 1)
 
-	/* Here's one way of allocating the ring buffer. */
-	char ringBuffer[BUFFER_SIZE]; 
-	char *ringBufferStart = ringBuffer;
-	char *ringBufferTail  = ringBuffer;
+/* Here's one way of allocating the ring buffer. */
+char ringBuffer[BUFFER_SIZE]; 
+char *ringBufferStart = ringBuffer;
+char *ringBufferTail  = ringBuffer;
 
-	void xprintf(const char *format, ...)
-	{
-		va_list args;
-		va_start(args, format);
-		size_t largestWritePossible = 
-				BUFFER_SIZE - (ringBufferTail - ringBufferStart);
-		int written = 
-				vsnprintf(ringBufferTail, largestWritePossible, format, args);
-		va_end(args);
+void xprintf(const char *format, ...)
+{
+	va_list args;
+	va_start(args, format);
+	size_t largestWritePossible = 
+			BUFFER_SIZE - (ringBufferTail - ringBufferStart);
+	int written = 
+			vsnprintf(ringBufferTail, largestWritePossible, format, args);
+	va_end(args);
 
-		if (written < 0) {
-			/* do some error handling */
-			return;
-		}
-
-		/*
-		* vsnprintf() doesn't write more than 'largestWritePossible' bytes to the
-		* ring buffer (including the terminating null byte '\0'). If the output is
-		* truncated due to this limit, then the return value ('written') is the
-		* number of characters (excluding the terminating null byte) which would
-		* have been written to the final string if enough space had been available.
-		*/
-
-		if (written > largestWritePossible) {
-			/* There are no easy solutions to tackle this. It
-			* may be easiest to enlarge
-			* your BUFFER_SIZE to avoid this. */
-			return; /* this is a short-cut; you may want to do something else.*/
-		}
-
-		ringBufferTail += written;
-
-		/* Is it time to wrap around? */
-		if (ringBufferTail > (ringBufferStart + HALF_BUFFER_SIZE)) {
-			size_t overflow = 
-				ringBufferTail - (ringBufferStart + HALF_BUFFER_SIZE);
-				memmove(ringBufferStart, ringBufferStart 
-						+ HALF_BUFFER_SIZE, overflow);
-			ringBufferTail = 
-						ringBufferStart + overflow;
-		}
+	if (written < 0) {
+		/* do some error handling */
+		return;
 	}
+
+	/*
+	* vsnprintf() doesn't write more than 'largestWritePossible' bytes to the
+	* ring buffer (including the terminating null byte '\0'). If the output is
+	* truncated due to this limit, then the return value ('written') is the
+	* number of characters (excluding the terminating null byte) which would
+	* have been written to the final string if enough space had been available.
+	*/
+
+	if (written > largestWritePossible) {
+		/* There are no easy solutions to tackle this. It
+		* may be easiest to enlarge
+		* your BUFFER_SIZE to avoid this. */
+		return; /* this is a short-cut; you may want to do something else.*/
+	}
+
+	ringBufferTail += written;
+
+	/* Is it time to wrap around? */
+	if (ringBufferTail > (ringBufferStart + HALF_BUFFER_SIZE)) {
+		size_t overflow = 
+			ringBufferTail - (ringBufferStart + HALF_BUFFER_SIZE);
+			memmove(ringBufferStart, ringBufferStart 
+					+ HALF_BUFFER_SIZE, overflow);
+		ringBufferTail = 
+					ringBufferStart + overflow;
+	}
+}
 
 
 ```
