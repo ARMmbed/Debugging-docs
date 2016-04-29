@@ -97,7 +97,7 @@ With the CMSIS-DAP upgrade, clicking the download button within uVision will sen
 Add break points (1) by clicking on the line of code you wish to stop at, and use the "run" button (2) to execute the program until the break point it hit.
 
 <span class="images">
-![](../Debugging/Images/CMSIS5.webp)
+![](../Debugging/Images/CMSIS5.png)
 </span>
 
 The tools enable you to step in various ways over/into/out of
