@@ -11,7 +11,7 @@ Programs typically use the printf() family to communicate something readable bac
 3. The chip forwards the feed to the development host. 
 4. This printf() traffic can be viewed with a terminal program running on the host. 
 
-<span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">
+<span class="tips">
 **Tip:** The following examples use the CoolTerm serial port application to read the ``printf()`` output, but you can use any terminal program you want and expect similar results.
 </br>
 **Tip:** The UART protocol requires that the sender and receiver each maintain their own clocks and know the baud rate. mbed interface chips use the 9,600 baud rate and your terminal program should be set to that baud rate to intercept the communication.
@@ -25,7 +25,7 @@ Programs typically use the printf() family to communicate something readable bac
 
 These two costs require that we use ``printf()`` judiciously. First, because there is limited code-space on the microcontroller's internal flash. Second, because it delays the program so much. Be particularly careful about using it in an event handler, which we expect to terminate within a few microseconds.
 
-<span style="background-color:#E6E6E6; border:1px solid #000;display:block; height:100%; padding:10px">
+<span class="notes">
 *Note:** ``printf()`` doesn’t require that you tell it beforehand how many parameters it should expect; it can receive any number you throw at it. To do this, you need to provide a format string with format specifiers, followed by a matching number of arguments. For example, ``printf(“temp too high %d”, temp)``: the format string is “temp too high %d”, and the format specifier is %d. The last bit is the argument: temp. It matches the format specifier %d, which specifies an integer. You can learn more on [Wikipedia](http://en.wikipedia.org/wiki/Printf_format_string).
 </span>
 
@@ -50,7 +50,7 @@ Here's a very basic example. In the [URI Beacon program](../GettingStarted/URIBe
 
 This is the terminal output. Note that "waiting" is printed every time ``waitForEvent`` is triggered:
 
-<span style="text-align:center; display:block;">
+<span class="images">
 ![](../Debugging/Images/TerminalOutput1.png)
 </span>
 
@@ -62,6 +62,7 @@ There are some nifty tricks you can do with ``printf()`` using macro-replacement
 The general form for a simple macro definition is:
 
 	#define MACRO_NAME value 
+
 This associates with the **MACRO_NAME** whatever **value** appears between the first space after the **MACRO_NAME** and the end of the line. The value constitutes the body of the macro.
 
 ``printf()``s are very useful for debugging when looking for an explanation to a problem. Otherwise, it is nice to be able to disable many of them. We can use the ``#define`` directive to create parameterized macros that extend the basic ``printf()`` functionality. For example, macros can expand to printf()s when needed, but to empty statements under other conditions. 
