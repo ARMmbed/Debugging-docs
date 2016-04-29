@@ -40,11 +40,11 @@ There will now be three mbed USB devices in device manager :
 * mbed Serial port
 * mbed CMSIS-DAP
 
-<span style="text-align:center; display:block;">
+<span class="images">
 ![](../Debugging/Images/CMSIS1.png)
 </span>
 
-<span style="background-color:lightyellow; color:black; display:block; height:100%; padding:10px">**Warning: Driver issue**
+<span class="warnings">**Warning: Driver issue**
 </br>
 If the serial is not recognised by the host:
 </br>1. Go into the device manager.
@@ -68,7 +68,7 @@ To export your mbed program for use in uVision, right-click the program in your 
 
 When you choose export, a zip file containing all the files you need for uVision will be generated. Unzip it and open the uVision project file (In this case, "project.uvproj"):
 
-<span style="text-align:center; display:block;">
+<span class="images">
 ![](../Debugging/Images/CMSIS2.png)
 </span>
 
@@ -80,7 +80,7 @@ Once you have unzipped and opened the ".uvproj" file, your project should appear
 
 When the project has successfully compiled, "fromelf" will automatically run, to extract a binary file. This could be drag and dropped onto the mbed flash disk.
 
-<span style="text-align:center; display:block;">
+<span class="images">
 ![](../Debugging/Images/CMSIS3.png)
 </span>
 
@@ -88,7 +88,7 @@ When the project has successfully compiled, "fromelf" will automatically run, to
 
 With the CMSIS-DAP upgrade, clicking the download button within uVision will send the binary directly to the flash of the MCU
 
-<span style="text-align:center; display:block;">
+<span class="images">
 ![](../Debugging/Images/CMSIS4.png)
 </span>
 
@@ -96,7 +96,7 @@ With the CMSIS-DAP upgrade, clicking the download button within uVision will sen
 
 Add break points (1) by clicking on the line of code you wish to stop at, and use the "run" button (2) to execute the program until the break point it hit.
 
-<span style="text-align:center; display:block;">
+<span class="images">
 ![](../Debugging/Images/CMSIS5.webp)
 </span>
 
@@ -104,7 +104,7 @@ The tools enable you to step in various ways over/into/out of
 
 Use the tool bar to add registers, memory, call stack, symbol and watch windows. This gives visibility on the system status when a breakpoint is reached.
 
-<span style="text-align:center; display:block;">
+<span class="images">
 ![](../Debugging/Images/CMSIS6.png)
 </span>
 
