@@ -19,7 +19,7 @@ To follow along you'll need to have the following software installed on your loc
     - [Visual Studio](http://visualgdb.com/tutorials/arm/mbed/).
 * [Mercurial](https://www.mercurial-scm.org/wiki/Download) (hg).
 
-<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** On Windows you might want to install [Cygwin](https://www.cygwin.com) for GCC and make.</span>
+<span class="notes">**Note:** On Windows you might want to install [Cygwin](https://www.cygwin.com) for GCC and make.</span>
 
 ## Writing a simple application
 
@@ -44,7 +44,7 @@ Let's start by writing a simple application in the [online compiler](https://dev
 
 1. Click  *Compile* and verify that your application builds as expected.
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Compile and Download](Images/offline12.png)</span>
+<span class="images">![Compile and Download](Images/offline12.png)</span>
 
 ## Build the application with a local toolchain
 
@@ -54,15 +54,15 @@ Before we can take our application offline, we first want to publish our project
 
 In the online IDE, right click on your project name and select *Publish*:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Publish button](Images/offline1.png)</span>
+<span class="images">![Publish button](Images/offline1.png)</span>
 
 You can choose to publish this project privately to prevent others from seeing it. Your repository is always write-protected, regardless of the setting you choose:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Publication settings](Images/offline2.png)</span>
+<span class="images">![Publication settings](Images/offline2.png)</span>
 
 After publication you get a link to your project page, which has a *Clone repository to desktop* button. While this will indeed clone your repository, we would be  missing build files for your toolchain, so we don't want to click this just yet:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Clone to desktop](Images/offline3.png)</span>
+<span class="images">![Clone to desktop](Images/offline3.png)</span>
 
 ### Step 2: Exporting
 
@@ -70,11 +70,11 @@ To get the build files we need, we use the online IDE to export a project to our
 
 For simplicity we'll be using GCC. Go back to the online compiler, right click on the project and select *Export*:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Export menu](Images/offline13.png) ![Exporting to desktop](Images/offline4.png)</span>
+<span class="images">![Export menu](Images/offline13.png) ![Exporting to desktop](Images/offline4.png)</span>
 
 This generates a ZIP file that contains our source code, a Makefile and all the libraries we depend on:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Content of the ZIP file](Images/offline5.png)</span>
+<span class="images">![Content of the ZIP file](Images/offline5.png)</span>
 
 Open a terminal window and navigate to the folder to which you extracted the project. You can verify whether we can build locally by running:
 
@@ -90,7 +90,7 @@ We can now debug our application using [GDB](https://docs.mbed.com/docs/debuggin
 
 For instance, here I used the same approach to export to uVision 4 and start a debug session:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Exporting to uVision](Images/offline14.png) ![Debugging with uVision](Images/offline8.png)</span>
+<span class="images">![Exporting to uVision](Images/offline14.png) ![Debugging with uVision](Images/offline8.png)</span>
 
 *Debugging with uVision 4 on the left, and syncing changes back to the online compiler on the right*
 
@@ -148,17 +148,17 @@ $ hg push
     remote: added 1 changesets with 1 changes to 1 files
 ```
 
-<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Tip:** You can store your credentials, so you don't have to type them again all the time. [Here are instructions](http://stackoverflow.com/questions/2584407/how-to-save-username-and-password-with-mercurial).</span>
+<span class="tips">**Tip:** You can store your credentials, so you don't have to type them again all the time. [Here are instructions](http://stackoverflow.com/questions/2584407/how-to-save-username-and-password-with-mercurial).</span>
 
 Now go back to the online compiler, right click on your project and select *Update* to pull in the changes you made locally:
 
-<span style="text-align:center;border:1px solid #000; display:block; height:100%; padding:10px;">![Updating your application](Images/offline6.png)</span>
+<span class="images">![Updating your application](Images/offline6.png)</span>
 
-<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** By running *Update* you will remove any uncommitted changes from the project.</span>
+<span class="images">**Note:** By running *Update* you will remove any uncommitted changes from the project.</span>
 
 When you open `main.cpp` in the online compiler you'll see that our changes have made it back online:
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Yay](Images/offline7.png)</span>
+<span class="images">![Yay](Images/offline7.png)</span>
 
 ### Retrieving changes made in the online compiler
 
@@ -181,7 +181,7 @@ Let's add a library in the online compiler:
 1. Select *Import Library > From URL*
 1. Enter the URL https://developer.mbed.org/teams/Nespresso-RGB-Sensor/code/GroveColourSensor/.
 
-    <span style="text-align:center;border:1px solid #000; display:block; height:100%; padding:10px;">![Import library](Images/offline10.png)</span>
+    <span class="images">![Import library](Images/offline10.png)</span>
 
 1. In `main.cpp`, add a line to reference the library:
 
@@ -301,7 +301,7 @@ $ hg push
 
 To update the library in the online compiler, we right click on the project and select 'Update all...'.
 
-<span style="text-align:center; border:1px solid #000; display:block; height:100%; padding:10px;">![Upload all](Images/offline11.png)</span>
+<span class="images">![Upload all](Images/offline11.png)</span>
 
 The library is now updated, and we can continue working in the online compiler.
 
