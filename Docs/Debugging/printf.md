@@ -11,10 +11,10 @@ Programs typically use the printf() family to communicate something readable bac
 3. The chip forwards the feed to the development host. 
 4. This printf() traffic can be viewed with a terminal program running on the host. 
 
-<span class="tips">
-**Tip:** The following examples use the CoolTerm serial port application to read the ``printf()`` output, but you can use any terminal program you want and expect similar results.
-</br>
-**Tip:** The UART protocol requires that the sender and receiver each maintain their own clocks and know the baud rate. mbed interface chips use the 9,600 baud rate and your terminal program should be set to that baud rate to intercept the communication.
+<span class="tips">**Tip:** The following examples use the CoolTerm serial port application to read the ``printf()`` output, but you can use any terminal program you want and expect similar results.
+</span>
+
+<span class="tips">**Tip:** The UART protocol requires that the sender and receiver each maintain their own clocks and know the baud rate. mbed interface chips use the 9,600 baud rate and your terminal program should be set to that baud rate to intercept the communication.
 </span>
 
 ``printf()`` doesn’t come free - it exerts some costs on our program:
@@ -25,14 +25,12 @@ Programs typically use the printf() family to communicate something readable bac
 
 These two costs require that we use ``printf()`` judiciously. First, because there is limited code-space on the microcontroller's internal flash. Second, because it delays the program so much. Be particularly careful about using it in an event handler, which we expect to terminate within a few microseconds.
 
-<span class="notes">
-*Note:** ``printf()`` doesn’t require that you tell it beforehand how many parameters it should expect; it can receive any number you throw at it. To do this, you need to provide a format string with format specifiers, followed by a matching number of arguments. For example, ``printf(“temp too high %d”, temp)``: the format string is “temp too high %d”, and the format specifier is %d. The last bit is the argument: temp. It matches the format specifier %d, which specifies an integer. You can learn more on [Wikipedia](http://en.wikipedia.org/wiki/Printf_format_string).
+<span class="notes">*Note:** ``printf()`` doesn’t require that you tell it beforehand how many parameters it should expect; it can receive any number you throw at it. To do this, you need to provide a format string with format specifiers, followed by a matching number of arguments. For example, ``printf(“temp too high %d”, temp)``: the format string is “temp too high %d”, and the format specifier is %d. The last bit is the argument: temp. It matches the format specifier %d, which specifies an integer. You can learn more on [Wikipedia](http://en.wikipedia.org/wiki/Printf_format_string).
 </span>
 
 Using ``printf()`` on mbed requires including the ``stdio`` header:
 
 ```c
-
 #include <stdio.h>
 
 ... some code ...
@@ -51,7 +49,7 @@ Here's a very basic example. In the [URI Beacon program](../GettingStarted/URIBe
 This is the terminal output. Note that "waiting" is printed every time ``waitForEvent`` is triggered:
 
 <span class="images">
-![](../Debugging/Images/TerminalOutput1.png)
+![CoolTerm showing our output](../Debugging/Images/TerminalOutput1.png)
 </span>
 
 
@@ -79,7 +77,6 @@ Remember that ``printf()`` can take as many parameters as you throw at it. Macro
 Here is an example:
 
 ```c
-	
 -- within some header file named something like trace.h --
 enum {
 	TRACE_LEVEL_DEBUG,
@@ -112,7 +109,6 @@ extern unsigned traceLevel;
 Here’s another example of macro-replacement that allows a formatted ``printf()``. Set ``#define MODULE_NAME "<YourModuleName>"`` before including the code below, and enjoy colourised ``printf()`` tagged with the module name that generated it:
 
 ```c
-
 #define LOG(x, ...) \
 	{ printf("\x1b[34m%12.12s: \x1b[39m"x"\x1b[39;49m\r\n", \
 	MODULE_NAME, ##__VA_ARGS__); fflush(stdout); }
@@ -125,7 +121,6 @@ Here’s another example of macro-replacement that allows a formatted ``printf()
 You can use ``ASSERT()`` to improve error reporting. It will use ``error()`` (a part of the mbed SDK that we reviewed earlier). ``error()`` not only flashes LEDs, it also puts the program into an infinite loop, preventing further operations. This will happen if the ``ASSERT()`` condition is evaluated as FALSE:
 
 ```c
-
 #define ASSERT(condition, ...)	{ \
 	if (!(condition))	{ \
 		error("Assert: " __VA_ARGS__); \
@@ -145,8 +140,6 @@ To avoid pushing during the operation’s run, we use ``sprintf()`` to write the
 Here is an example implementation of a ring buffer. We’ve created our own version of a wrapping ``printf()`` using a macro called ``xprintf()``.  Debug messages accumulated using ``xprintf()`` can be read out circularly starting from ``ringBufferTail`` and wrapping around (``ringBufferTail`` + ``HALF_BUFFER_SIZE``). The first message would most likely be garbled because of an overwrite by the most recently appended message:
 
 ```c
-
-
 #define BUFFER_SIZE 512 /* You need to choose a suitable value here. */
 #define HALF_BUFFER_SIZE (BUFFER_SIZE >> 1)
 
@@ -197,8 +190,6 @@ void xprintf(const char *format, ...)
 					ringBufferStart + overflow;
 	}
 }
-
-
 ```
 
 ______
