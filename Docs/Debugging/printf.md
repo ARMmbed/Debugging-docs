@@ -25,7 +25,7 @@ Programs typically use the printf() family to communicate something readable bac
 
 These two costs require that we use ``printf()`` judiciously. First, because there is limited code-space on the microcontroller's internal flash. Second, because it delays the program so much. Be particularly careful about using it in an event handler, which we expect to terminate within a few microseconds.
 
-<span class="notes">*Note:** ``printf()`` doesn’t require that you tell it beforehand how many parameters it should expect; it can receive any number you throw at it. To do this, you need to provide a format string with format specifiers, followed by a matching number of arguments. For example, ``printf(“temp too high %d”, temp)``: the format string is “temp too high %d”, and the format specifier is %d. The last bit is the argument: temp. It matches the format specifier %d, which specifies an integer. You can learn more on [Wikipedia](http://en.wikipedia.org/wiki/Printf_format_string).
+<span class="notes">**Note:** ``printf()`` doesn’t require that you tell it beforehand how many parameters it should expect; it can receive any number you throw at it. To do this, you need to provide a format string with format specifiers, followed by a matching number of arguments. For example, ``printf(“temp too high %d”, temp)``: the format string is “temp too high %d”, and the format specifier is %d. The last bit is the argument: temp. It matches the format specifier %d, which specifies an integer. You can learn more on [Wikipedia](http://en.wikipedia.org/wiki/Printf_format_string).
 </span>
 
 Using ``printf()`` on mbed requires including the ``stdio`` header:
@@ -49,7 +49,8 @@ Here's a very basic example. In the [URI Beacon program](../GettingStarted/URIBe
 This is the terminal output. Note that "waiting" is printed every time ``waitForEvent`` is triggered:
 
 <span class="images">
-![CoolTerm showing our output](../Debugging/Images/TerminalOutput1.png)
+![](../Debugging/Images/TerminalOutput1.png)
+<span>CoolTerm showing our output</span>
 </span>
 
 
@@ -115,7 +116,6 @@ Here’s another example of macro-replacement that allows a formatted ``printf()
 #define WARN(x, ...) \
 	{ printf("\x1b[34m%12.12s: \x1b[33m"x"\x1b[39;49m\r\n", \
 	MODULE_NAME, ##__VA_ARGS__); fflush(stdout); }
-
 ```
 
 You can use ``ASSERT()`` to improve error reporting. It will use ``error()`` (a part of the mbed SDK that we reviewed earlier). ``error()`` not only flashes LEDs, it also puts the program into an infinite loop, preventing further operations. This will happen if the ``ASSERT()`` condition is evaluated as FALSE:
@@ -125,7 +125,6 @@ You can use ``ASSERT()`` to improve error reporting. It will use ``error()`` (a 
 	if (!(condition))	{ \
 		error("Assert: " __VA_ARGS__); \
 	} }
-
 ```
 
 
