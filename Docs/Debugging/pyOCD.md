@@ -27,7 +27,6 @@ The interface chip implements CMSIS-DAP. To drive the CMSIS-DAP interface chip o
 The GDB server can be launched by running ``gdb_server.py``. This script should be able to detect any connected mbed boards. Here is an example of executing the script from the terminal while a Nordic mKIT is connected:
 
 ```
-
 $ sudo python test/gdb_server.py
 Welcome to the PyOCD GDB Server Beta Version
 INFO:root:new board id detected: 107002001FE6E019E2190F91
@@ -39,7 +38,6 @@ INFO:root:4 hardware breakpoints, 0 literal comparators
 INFO:root:CPU core is Cortex-M0
 INFO:root:2 hardware watchpoints
 INFO:root:GDB server started at port:3333
-
 ```
 
 At this point, the target microcontroller is waiting for interaction from a GDB server. This server is running at port 3333 on the development host. You can connect to it from a debugger such as GDB (the client).
@@ -47,7 +45,6 @@ At this point, the target microcontroller is waiting for interaction from a GDB 
 Here is an example of launching the GDB client:
 
 ```
-
 ~/play/demo-apps/BLE_Beacon/Build$ arm-none-eabi-gdb BLE_BEACON.elf
 GNU gdb (GNU Tools for ARM Embedded Processors) 7.6.0.20140731-cvs
 Copyright (C) 2013 Free Software Foundation, Inc.
@@ -63,7 +60,6 @@ Reading symbols from
 	/home/rgrover/play/demo-apps/BLE_Beacon/Build/BLE_BEACON.elf...
 warning: Loadable section "RW_IRAM1" outside of ELF segments
 (gdb)
-
 ```
 
 Notice that we pass the .``elf`` file as an argument. We could also have used the ``file`` command within GDB to load symbols from this ``.elf`` file after starting GDB. The command set offered by GDB to help with symbol management and debugging is outside the scope of this document, but you can find it in [GDB's documentation](https://www.gnu.org/software/gdb/documentation/).
@@ -71,7 +67,6 @@ Notice that we pass the .``elf`` file as an argument. We could also have used th
 Now, we connect to the GDB server (for ease of reading, we've added line breaks in the path);
 
 ```
-
 (gdb) target remote localhost:3333
 Remote debugging using localhost:3333
 warning: Loadable section "RW_IRAM1" outside of ELF segments
@@ -81,7 +76,6 @@ HardFault_Handler () at 	/home/rgrover/play/mbed-src/libraries
 		//startup_nRF51822.s:115
 11	B 	.
 (gdb)
-
 ```
 
 Now we can perform normal debugging using the GDB command console (or a GUI, if our heart desires).
