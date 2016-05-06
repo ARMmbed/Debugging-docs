@@ -18,11 +18,12 @@ The interface chip implements CMSIS-DAP. To drive the CMSIS-DAP interface chip o
 ![](../Debugging/Images/PyOCD1.png)
 </span>
 
-<span class="notes">To install pyOCD, follow the [instructions](https://github.com/mbedmicro/pyOCD/blob/master/README.md#installation) to get the external USB libraries pyOCD relies on.
-<br /><br />**Notes:**
-<br />* You'll need to run ``setup.py`` for both the USB libraries and pyOCD. 
-<br />* You can follow [HOW_TO_BUILD.md](https://github.com/mbedmicro/pyOCD/blob/master/HOW_TO_BUILD.md) to see how to build pyOCD into a single executable GDB server program.
-<br />* A series of tests in the [test sub-folder](https://github.com/mbedmicro/pyOCD/tree/master/test) offers scripts that you may find useful as a foundation for developing custom interaction with the targets over CMSIS-DAP.
+To install pyOCD, follow the [instructions](https://github.com/mbedmicro/pyOCD/blob/master/README.md#installation) to get the external USB libraries pyOCD relies on.
+
+<span class="notes">**Notes:**<br /> 
+* You'll need to run ``setup.py`` for both the USB libraries and pyOCD. <br /> 
+* You can follow [HOW_TO_BUILD.md](https://github.com/mbedmicro/pyOCD/blob/master/HOW_TO_BUILD.md) to see how to build pyOCD into a single executable GDB server program.<br /> 
+* A series of tests in the [test sub-folder](https://github.com/mbedmicro/pyOCD/tree/master/test) offers scripts that you may find useful as a foundation for developing custom interaction with the targets over CMSIS-DAP.</span>
 
 The GDB server can be launched by running ``gdb_server.py``. This script should be able to detect any connected mbed boards. Here is an example of executing the script from the terminal while a Nordic mKIT is connected:
 
