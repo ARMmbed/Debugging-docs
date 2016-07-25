@@ -18,7 +18,7 @@ The interface chip implements CMSIS-DAP. To drive the CMSIS-DAP interface chip o
 ![](../Debugging/Images/PyOCD1.png)
 </span>
 
-To install pyOCD, follow the [instructions](https://github.com/mbedmicro/pyOCD/blob/master/README.md#installation) to get the external USB libraries pyOCD relies on.
+To install pyOCD, follow the [instructions](https://github.com/mbedmicro/pyOCD/blob/master/README.rst#installation) to get the external USB libraries pyOCD relies on.
 
 <span class="notes">**Notes:** 
 <br />a. You'll need to run ``setup.py`` for both the USB libraries and pyOCD.
