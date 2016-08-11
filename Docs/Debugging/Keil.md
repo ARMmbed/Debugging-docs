@@ -18,7 +18,7 @@ To try the mbed CMSIS-DAP upgrade you will need :
 
 * The firmware that supports CMSIS-DAP for your target.
 
-* An offline tool that supports CMSIS-DAP - [Keil MDK v4.60](https://www.keil.com/demo/eval/arm.htm) for example.
+* An offline tool that supports CMSIS-DAP - [Keil MDK](https://www.keil.com/demo/eval/arm.htm) for example.
 
 * An example project you wish to debug.
 
@@ -56,15 +56,15 @@ If the serial is not recognised by the host:
 
 ##Install an offline tool
 
-The recommended offline tool is [Keil MDK v4.60](https://www.keil.com/demo/eval/arm.htm). Follow the links and instructions to set up the evaluation copy.
+The recommended offline tool is [Keil MDK v5.20](https://www.keil.com/demo/eval/arm.htm). Follow the links and instructions to set up the evaluation copy.
 
-##Export a project
+##Export a project using the Online Compiler
 
-[uVision](http://www.keil.com/uvision) is one of the external offline toolchains supported by the mbed platform.
+The [Online Compiler](https://docs.mbed.com/docs/mbed-os-handbook/en/5.1/dev_tools/online_comp/) supports exporting to multiple offline tools. [uVision](http://www.keil.com/uvision) is one of the third party toolchains supported by the mbed platform. Check the full list [here](https://docs.mbed.com/docs/mbed-os-handbook/en/5.1/dev_tools/third_party/).
 
 For a complete overview of the export feature, please refer to our general: [Exporting to offline toolchains](/Going_Further/Export/).
 
-To export your mbed program for use in uVision, right-click the program in your program workspace. From the dialog, you can select the "Export To" as "Keil uVision4", and the target microcontroller you wish to export for. 
+To export your mbed program for use in uVision, right-click the program in your program workspace. From the dialog, you can select the "Export To" as "uVision4" or "uVision5" (depending on the version you have), and the target microcontroller you wish to export for. 
 
 When you choose export, a zip file containing all the files you need for uVision will be generated. Unzip it and open the uVision project file (In this case, "project.uvproj"):
 
@@ -72,9 +72,15 @@ When you choose export, a zip file containing all the files you need for uVision
 ![](../Debugging/Images/CMSIS2.png)
 </span>
 
+##Export a project using the mbed CLI
+
+[mbed CLI](https://docs.mbed.com/docs/mbed-os-handbook/en/5.1/dev_tools/cli/) is the ARM mbed command line tool which enables the full mbed workflow. For example, to export project based on the FRDM-K64F board to uVision run:
+
+	$ mbed export -i uvision -m K64F
+
 ##Compile, download, debug!
 
-Once you have unzipped and opened the ".uvproj" file, your project should appear in the uVision IDE much in the same way it appeared in the online compiler. You can browse the project files by navigating in the left panel, and the code will appear in the main panel.
+Once you have opened the ".uvproj" file, your project should appear in the uVision IDE much in the same way it appeared in the online compiler. You can browse the project files by navigating in the left panel, and the code will appear in the main panel.
 
 ###Compile
 
