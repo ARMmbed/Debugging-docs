@@ -1,7 +1,7 @@
 #Debugging with Eclipse and pyOCD
 
 ##Debugging
-To start a debugging session, open the drop-down menu next to the bug icon, and select the debug configuration created earlier. This will automatically load the current program and begin a debugging session. From there, you can do things such as set breakpoints, set watchpoints, view registers, view disassembly, browse memory and examine the callstack.
+To start a debugging session, open the drop-down menu next to the bug icon and select the debug configuration created earlier. This will automatically load the current program and begin a debugging session. From there, you can do things such as set breakpoints, set watchpoints, view registers, view disassembly, browse memory and examine the callstack.
 
 <span class="images">![](Images/21_-_debugging_4.png)</span>
 
