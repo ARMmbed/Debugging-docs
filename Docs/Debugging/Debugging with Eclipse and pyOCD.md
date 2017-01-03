@@ -22,7 +22,7 @@ This article explains how to debug an exported mbed project with Eclipse and pyO
     1. Add the GCC ARM Embedded's bin directory. For example, `C:\Program Files (x86)\GNU Tools ARM Embedded\4.9 2015q2\bin`.
     1. Install **Make** and add it to your system path. Make is available as one of the tools here: [http://gnuwin32.sourceforge.net/](http://gnuwin32.sourceforge.net/).
 1. Python
-  1. Windows Only - Select "Add to path" when installing.
+  1. Windows Only: select "Add to path" when installing.
 1. Install pyOCD by running ``pip install pyocd``.
 
 ##Importing to Eclipse and building
