@@ -5,6 +5,7 @@ docs_dir: Docs
 pages:
 - ['index.md','Introduction to Debugging']
 - ['Debugging/printf.md','Debugging', 'printf()']
+- ['Debugging/Debugging_Eclipse_pyOCD.md','Debugging', 'Debugging with Eclipse and pyOCD']
 - ['Debugging/pyOCD.md','Debugging', 'pyOCD']
 - ['Debugging/Keil.md','Debugging', 'Keil uVision']
 - ['Debugging/debugging_microbit.md','Debugging', 'Debugging the BBC micro:bit']
