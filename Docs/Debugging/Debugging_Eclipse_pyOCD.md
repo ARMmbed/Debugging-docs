@@ -1,67 +1,121 @@
-#Debugging with Eclipse and pyOCD
+# Debugging mbed OS 5 applications with Eclipse
 
-Through debugging, you can do things such as set breakpoints, set watchpoints, view registers, view disassembly, browse memory and examine the callstack. This article explains how to debug an exported mbed project with Eclipse and pyOCD. To debug a project, first, import it with mbed CLI, then create an Eclipse Makefile project and finally set up debugger configurations. You can find more detailed explanations of these steps below.
+This document explains how to build and debug mbed OS applications using Eclipse. Before starting, please [configure your local debug toolchain](toolchain.md).
 
-##Initial setup
-1. Download the latest version of Eclipse with CDT.
-1. Install the GNU ARM Eclipse plugin.
-	1. Open Eclipse.
-	1. Click the **Help** menu item and select **Install New Software**.
-	1. In the **Work with** box, paste the install address and press Enter: http://sourceforge.net/projects/gnuarmeclipse/files/Eclipse/updates/. If this does not work for you, please see the [GNU ARM Eclipse solutions and workarounds](http://gnuarmeclipse.github.io/blog/2016/12/02/plugins-install-issue/).
-  1. The package **GNU ARM C/C++ Cross Development Tools** appears. Select it.
-  1. Click **Next** repeatedly and accept licence agreements.
-  1. Click **Finish**. If prompted to restart Eclipse, click **Yes**.
-1. [Install tools necessary for Makefile projects](https://docs.mbed.com/docs/mbed-os-handbook/en/5.3/dev_tools/third_party/):
-  1. [GCC ARM Embedded](https://launchpad.net/gcc-arm-embedded).
-    1. Windows only: add the GCC ARM Embedded's bin directory. For example, `C:\Program Files (x86)\GNU Tools ARM Embedded\4.9 2015q2\bin`.
-  1. Python
-    1. Windows Only: select "Add to path" when installing.
-1. Install pyOCD by running `pip install pyocd`.
-1. Install mbed CLI by running `pip install mbed-cli`.
+## Installing Eclipse
 
-##Importing to Eclipse and building
-1. Import the project with `mbed <project>`.
+You need to install Eclipse CDT with the GNU ARM Eclipse plugins to begin:
+
+1. Install [Eclipse IDE for C/C++ Developers](http://www.eclipse.org/downloads/eclipse-packages/).
 1. Open Eclipse.
-1. **File** > **New** > **Makefile Project with Existing Code**.
-  1. Paste the location of your project into **Existing Code Location**.
-  1. **Project Name** automatically populates. You can update the name here.
-  1. In **Toolchain for Indexer Settings**, select `<none>`.
-  1. Click **Finish** to create the project.
-1. To set up building in Eclipse, go to the **Project** menu item, and select **Properties**.
-  1. Select **C/C++ Build**.
-  1. Clear the **Use default build command** check box.
-  1. For **Build command**, enter **mbed compile -j0 -t <toolchain> -m <target> -o debug-info**.
-  	- For **<toolchain>**, you can choose between **GCC_ARM**, **ARM** and **IAR**.
-	- For **<target>**, you can choose any supported mbed target, such as **K64F**.
-	- Note: The option **-j0** instructs mbed CLI with all cores.
-	- Note: The option **--profile debug** instructs mbed CLI to build with debugging information.
-  1. Click **Apply**. 
-  1. Click **OK**.
-  <span class="images">![](Images/Eclipse_pyOCD_1.webp)</span>
-1. Click the build button in Eclipse, and verify the project builds successfully.
+1. Create a workspace directory. This will be separate from your code.
+1. Install the GNU ARM Eclipse plugin:
+    1. Click the **Help** menu item and select **Install New Software**.
+    1. In the **Work with** box, paste the install address, and press Enter: `http://sourceforge.net/projects/gnuarmeclipse/files/Eclipse/updates/`.
 
-##Setting up debug configuration
-The last step before actually debugging is to set up the debug configuration. This only needs to be done once each project. Once created, the configuration can be checked into revision control, allowing anyone else working on the project to use it without needing to go through setup again.
+    	If this does not work, please see the [GNU ARM Eclipse solutions and workarounds page](http://gnuarmeclipse.github.io/blog/2016/12/02/plugins-install-issue/).
+    1. The package **GNU ARM C/C++ Cross Development Tools** appears. Select it.
 
-1. To change configurations, **Run** > **Debug Configurations...**.
-1. Right click on **GDB pyOCD Debugging** and select **New**.
-1. Move to the **Main** tab. 
-1. Verify **Project** is correct and **C/C++ Application** points to the .elf file.
-<span class="images">![](Images/Eclipse_pyOCD_2.webp)</span>
-1. Move to the **Debugger** tab.
-  1. In the **pyOCD Setup** section:
-    1. Check **Start pyOCD locally** if it isn't checked already.
-    1. Set **Executable:** to **pyocd-gdbserver** or the full path to your installation.
-    1. Set **GDB port:** to a free port. The default value of 3333 should work.
-  1. In the **GDB Client Setup** section:
-    1. Set **Executable** to **arm-none-eabi-gdb.exe**.
-    1. In **Commands:**, add **set mem inaccessible-by-default off** if it is not present. It should look something like this when configured: 
-  <span class="images">![](Images/Eclipse_pyOCD_3.webp)</span>
-  1. Move to the **Common** tab.
-    1. To save the debug configuration locally and check it into the current project, select **Shared file** under **Save as**.
-    1. In **Display in favorites menu box**, check **Debug**.
+        ![Selecting the cross development tools](Images/eclipse2.PNG)
+    1. Click **Next** repeatedly, and accept the license agreements.
+    1. Click **Finish**. If prompted to restart Eclipse, click **Yes**.
 
-##Debugging
-To start a debugging session, open the drop-down menu next to the bug icon and select the debug configuration created earlier. This will automatically load the current program and begin a debugging session. 
+## Exporting a project
 
-<span class="images">![](Images/Eclipse_pyOCD_4.webp)</span>
+To export your project to Eclipse, you can use either the mbed Online Compiler or mbed CLI.
+
+### Online compiler
+
+1. Right click on your project.
+1. Select *Export Program...*.
+1. Under *Export toolchain*, select *Eclipse (GCC ARM)*.
+    * For most targets you can also export to IAR or ARMCC.
+1. Click *Export*.
+1. Unpack to a convenient location. Make a note of this location for the import step.
+
+![Exporting to Eclipse](Images/eclipse1.PNG)
+
+### mbed CLI
+
+In your project folder, run:
+
+```
+# Replace K64F with your target board
+# If you're not using GCC ARM, use -i eclipse_armc5 for ARMCC, or -i eclipse_iar for IAR
+
+$ mbed export -i eclipse_gcc_arm -m K64F --profile mbed-os/tools/profiles/debug.json
+```
+
+## Importing the project in Eclipse
+
+1. Open Eclipse.
+1. On the *Welcome* screen, select *Import a project with a working Makefile*.
+1. Select the folder to which you extracted your mbed OS project.
+1. Under *Toolchain for Indexer Settings*, select `<none>`.
+
+    ![Import project](Images/eclipse3.PNG)
+1. Click *Finish*.
+1. Dismiss the Welcome screen.
+1. Select *Project > Build Project* to build the project.
+
+<span class="notes">**Note:** If building fails with `make[1]: arm-none-eabi-g++: No such file or directory`, you need to configure Eclipse's PATH (not your OS PATH):
+
+1. In Eclipse, click *Project > Properties > C/C++ Build > Environment*.
+1. Click *Add*.
+1. Under *Name*, enter `PATH`.
+1. Under *Value*, add the location of the GNU ARM Embedded Toolchain. To find it:
+    * On Windows, from a CMD window, run `where arm-none-eabi-g++`.
+    * On Mac OS and Linux, from a Terminal, run `which arm-none-eabi-g++`.
+
+![Setting up PATH](Images/eclipse4.PNG)
+</span>
+
+Once the project builds, you can configure the debugger. The configuration depends on the debug server you're using: pyOCD or OpenOCD.
+
+### pyOCD
+
+1. Select *Run > Debug Configurations...*.
+1. If no configuration exists under *GDB pyOCD Debugging*, click on *New launch configuration*.
+1. In the *Main* tab:
+    * Under *C/C++ Application*, select the `.elf` file (BUILD/projectname.elf).
+
+    ![Main tab](Images/eclipse5.PNG)
+1. In the *Debugger* tab:
+    * Under *pyOCD Setup*, set the *Executable* path to your copy of `pyocd-gdbserver`.
+    * Under *GDB Server Setup*, set the *Executable* path to your copy of `arm-none-eabi-gdb`.
+    * If you cannot see the *GDB Server Setup* section, the scrollbar might be hidden; switch tabs to make the scrollbar reappear.
+
+    ![Debugger tab](Images/eclipse6.PNG)
+1. Click *Apply*.
+1. Click *Debug* to start debugging.
+
+### OpenOCD
+
+1. Select *Run > Debug Configurations...*.
+1. If a configuration already exists under *GDB pyOCD Debugging*, please remove it.
+1. If no configuration exists under *GDB OpenOCD Debugging*, click on *New launch configuration*.
+1. In the *Main* tab:
+    * Select the `.elf` file (BUILD/projectname.elf) under *C/C++ Application*.
+
+    ![Main tab](Images/eclipse7.PNG)
+1. In the *Debugger* tab:
+    * Under *OpenOCD Setup*, set the *Executable* path to your copy of `openocd`.
+    * Under *OpenOCD Setup*, set the *Config options* to the setup options from the [Configure your local debug toolchain](toolchain.md) guide.
+    *  Under *GDB Client Setup*, set the *Executable* path to your copy of `arm-none-eabi-gdb`.
+    * If you cannot see the *GDB Server Setup* section, the scrollbar might be hidden; switch tabs to make the scrollbar reappear.
+
+    ![Debugger tab](Images/eclipse8.PNG)
+1. Click *Apply*.
+1. Click *Debug* to start debugging.
+
+![Debugging an mbed OS 5 application in Eclipse](Images/eclipse9.PNG)
+
+## Building with mbed CLI
+
+We build using Make, but you can also use mbed CLI for building from Eclipse:
+
+1. Go to *Project > Properties > C/C++ Build*.
+1. Remove the check *Use default build command*.
+1. Set *Build command* to `mbed`.
+1. Under *Behavior* > *Build (Incremental build)*, select your mbed CLI build options. For example: `compile -m K64F -t GCC_ARM --profile ${CWD}mbed-os/tools/profiles/debug.json`.
+1. Make sure to update the paths to the `.elf` file in your debug configuration.

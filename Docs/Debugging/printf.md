@@ -1,113 +1,244 @@
-#Debugging with pyOCD
+# Debugging using printf() statements
 
-This article uses BLE as an example, but the techniques presented here are not BLE-specific.
+An easy way to inspect what your application is doing is to augment your application with log statements. In mbed, you can use a serial connection to send feedback from your development board back to your computer. This uses the same USB cable that you use to program your device.
 
-##Printf()
+## Prerequisites
 
-Programs typically use the printf() family to communicate something readable back to the user:
+### Windows
 
-1. The printf() functions produce output according to a format string (containing format specifiers) and matching value arguments. 
-2. The microcontroller's universal asynchronous receiver/transmitter (UART) console peripheral "feeds" output from ``printf()`` into the interface chip. 
-3. The chip forwards the feed to the development host. 
-4. This printf() traffic can be viewed with a terminal program running on the host. 
+Install the serial port driver for your development board:
 
-<span class="tips">**Tip:** The following examples use the CoolTerm serial port application to read the ``printf()`` output, but you can use any terminal program you want and expect similar results.
-</span>
+* For ST boards: [ST Link Driver](https://developer.mbed.org/teams/ST/wiki/ST-Link-Driver).
+* For all other boards: [mbed Windows serial port driver](https://developer.mbed.org/handbook/Windows-serial-configuration) - not required for Windows 10.
 
-<span class="tips">**Tip:** The UART protocol requires that the sender and receiver each maintain their own clocks and know the baud rate. mbed interface chips use the 9,600 baud rate and your terminal program should be set to that baud rate to intercept the communication.
-</span>
+You also need a serial monitor:
 
-``printf()`` doesn’t come free - it exerts some costs on our program:
+* [TeraTerm](http://sourceforge.jp/projects/ttssh2/files).
 
-* An additional 5-10K of flash memory use. Do note, however, that this is the cost of the first use of ``printf()`` in a program; further uses cost almost no additional memory.
+### mac OS
 
-* Each call to ``printf()`` takes a significant time for processing and execution: about 100,000 instructions, or 10 milliseconds, depending on the clock speed. This is only a baseline: ``printf()`` with formatting will cost even more. If your clock runs slowly (as most microcontrollers' clocks do) and your computational power is therefore lower, ``printf()`` can sometimes cost so much it’s actually used as a delay.
+On mac OS, all software comes installed by default.
 
-These two costs require that we use ``printf()`` judiciously. First, because there is limited code-space on the microcontroller's internal flash. Second, because it delays the program so much. Be particularly careful about using it in an event handler, which we expect to terminate within a few microseconds.
+### Linux
 
-<span class="notes">**Note:** ``printf()`` doesn’t require that you tell it beforehand how many parameters it should expect; it can receive any number you throw at it. To do this, you need to provide a format string with format specifiers, followed by a matching number of arguments. For example, ``printf(“temp too high %d”, temp)``: the format string is “temp too high %d”, and the format specifier is %d. The last bit is the argument: temp. It matches the format specifier %d, which specifies an integer. You can learn more on [Wikipedia](http://en.wikipedia.org/wiki/Printf_format_string).
-</span>
+If you do not have it, install [GNU Screen](https://www.gnu.org/software/screen/).
 
-Using ``printf()`` on mbed requires including the ``stdio`` header:
+## Getting started
 
-```c
-#include <stdio.h>
+To send data over the serial connection, use the [Serial](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/interfaces/digital/Serial/) object.
 
-... some code ...
+### Example program
 
-	printf("debug value %x\r\n", value);
+This program blinks the LED on your development board and prints a message every time the LED changes state:
+
+```cpp
+#include "mbed.h"
+
+// define the Serial object
+Serial pc(USBTX, USBRX);
+
+DigitalOut led1(LED1);
+
+int main() {
+    while (true) {
+        led1 = !led1;
+
+        // Print something over the serial connection
+        pc.printf("Blink! LED is now %d\r\n", led1.read());
+
+        wait(0.5);
+    }
+}
 ```
 
-Here's a very basic example. In the [URI Beacon program](../GettingStarted/URIBeacon.md), we've added ``printf()`` in three places (this is too much for a real-life program):
+Compile this program, and flash it on your development board. You now can inspect these messages using a serial monitor.
 
-* After setting ``DEVICE_NAME``, we've added ``printf("Device name is %s\r\n", DEVICE_NAME);``
+### Seeing the log messages
 
-* After ``startAdvertisingUriBeaconConfig();`` we've added ``printf("started advertising \r\n")``;.
+#### Windows
 
-* After ``ble.waitForEvent();`` we've added ``printf("waiting \r\n");``.
+1. Open TeraTerm.
+1. Click *File > New Connection*.
+1. Select the *Serial* radio button.
+1. Choose your development board from the drop-down menu (often called 'mbed Serial Port' or 'STLink Virtual Port').
+1. Click *OK*.
+1. Log messages appear in the main window.
 
-This is the terminal output. Note that "waiting" is printed every time ``waitForEvent`` is triggered:
+![Selecting the COM port](Images/printf1.PNG)
 
-<span class="images">
-![](../Debugging/Images/TerminalOutput1.png)
-<span>CoolTerm showing our output</span>
-</span>
+![Seeing the output over the serial port](Images/printf2.PNG)
 
+<class span="notes">**Note:** Unsure which COM port is used? In the [device manager](http://www.computerhope.com/issues/ch000833.htm), look under the *Ports* section.</span>
 
-##Printf() Macros
+#### macOS
 
-There are some nifty tricks you can do with ``printf()`` using macro-replacement by the pre-processor.
+1. Open a terminal window.
+1. Enter `screen /dev/tty.usbm`, and press `Tab` to autocomplete.
+1. Press `Enter`.
+1. Log messages appear.
+1. To exit, press:
+	* `Ctrl+A`
+	* `Ctrl+\`
+	* `y`
+
+#### Linux
+
+1. Open a terminal window.
+1. Find the handler for your device:
+
+    ```
+    $ ls /dev/ttyACM*
+    /dev/ttyACM0
+    ```
+1. Connect to the board by entering: `sudo screen /dev/ttyACM0 9600`.
+1. Log messages appear.
+1. To exit:
+	1. Press `Ctrl+A`
+	1. Enter `quit`
+
+<span class="notes">**Note:** To avoid using `sudo`, set up a udev rule.</span>
+
+#### Setting the baud rate
+
+By default, the speed at which the microcontroller and your computer communicate (the baud rate) is set to 9,600 baud. This setting fits most use cases, but you can change it by calling the `baud` function on the serial object:
+
+```cpp
+#include "mbed.h"
+
+Serial pc(USBTX, USBRX);
+
+int main() {
+    pc.baud(115200);
+    pc.printf("Hello World!\r\n");
+}
+```
+
+If you change the baud rate on the device, you also need to change it on your serial monitor:
+
+1. Windows:
+	1. In TeraTerm, go to *Setup > Serial Port*.
+	1. Change *Baud rate* to 115200.
+1. mac OS and Linux: Pass the baud rate as the last argument to the `screen` command:
+
+    ```
+    $ screen /dev/ttyACM0 115200
+    ```
+
+![Changing the baud rate](Images/printf3.PNG)
+
+## Printf()
+
+As seen above, you use the `printf()` function to communicate back to the user:
+
+1. The `printf()` functions produce output according to a format string (containing format specifiers) and matching value arguments.
+2. The microcontroller's universal asynchronous receiver/transmitter (UART) console peripheral "feeds" output from `printf()` into the interface chip.
+3. The chip forwards the feed to the development host.
+4. You can view this `printf()` traffic with a terminal program running on the host.
+
+`printf()` is not free:
+
+* It uses an additional 5-10K of flash memory. However, this is the cost of the first use of `printf()` in a program; further uses cost almost no additional memory.
+* Each call to `printf()` takes significant time to process and execute: about 100,000 instructions, or 10 milliseconds, depending on the clock speed. This is only a baseline: `printf()` with formatting will cost even more. If your clock runs slowly (as most microcontrollers' clocks do) and your computational power is therefore lower, `printf()` can cost so much that you can use it as a delay.
+
+The limited code-space on the microcontroller's internal flash and the delay of the program require you to use `printf()` judiciously. Be careful about using it in an event handler, which we expect to terminate within a few microseconds.
+
+### Parameters
+
+`printf()` can receive any number of parameters without knowing how many to expect.
+
+You need to provide a format string with format specifiers, followed by a matching number of arguments. For example, `printf(“temp too high %d”, temp)`: the format string is `temp too high %d`, and the format specifier is `%d`. The last part is the argument: `temp`. It matches the format specifier `%d`, which specifies an integer.
+
+You can learn more on [Wikipedia](http://en.wikipedia.org/wiki/Printf_format_string).
+
+## Printf() from an interrupt context
+
+If you run this code, you may receive an unpleasant surprise:
+
+```cpp
+#include "mbed.h"
+
+DigitalOut led(LED1);
+InterruptIn btn(SW2);
+
+void do_something() {
+  led = !led;
+  printf("Toggle LED!\r\n"); // CRASH! Blocking call in ISR...
+}
+
+int main() {
+  btn.fall(&do_something);
+
+  while (1) { }
+}
+```
+
+Your board crashes when you press the button because [mutexes guard](https://developer.mbed.org/handbook/CMSIS-RTOS) calls to stdio functions, such as printf, in the ARM C standard library, and mutexes [cannot be called from an ISR](https://www.keil.com/pack/doc/cmsis/RTOS/html/group__CMSIS__RTOS__MutexMgmt.html).
+
+You can avoid this by:
+
+* Signaling from the ISR to the main thread using a [semaphore](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/tasks/rtos/#semaphore) or [mailbox](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/tasks/rtos/#mail), and calling `printf` in the main thread.
+* Using an event dispatching library, such as [mbed events](https://docs.mbed.com/docs/mbed-os-api-reference/en/latest/APIs/tasks/events/).
+
+You can see example code for both approaches in [this blog post](https://developer.mbed.org/blog/entry/Simplify-your-code-with-mbed-events/).
+
+## Printf() macros
+
+You can use macro-replacement, which the preprocessor performs, to do some nifty tricks with `printf()`.
 
 The general form for a simple macro definition is:
 
-	#define MACRO_NAME value 
+```
+#define MACRO_NAME value
+```
 
-This associates with the **MACRO_NAME** whatever **value** appears between the first space after the **MACRO_NAME** and the end of the line. The value constitutes the body of the macro.
+This associates the macro's name (`MACRO_NAME`) with the body of the macro, represented by whatever `value` appears between the first space after the `MACRO_NAME` and the end of the line.
 
-``printf()``s are very useful for debugging when looking for an explanation to a problem. Otherwise, it is nice to be able to disable many of them. We can use the ``#define`` directive to create parameterized macros that extend the basic ``printf()`` functionality. For example, macros can expand to printf()s when needed, but to empty statements under other conditions. 
+You can use `printf()` when you are debugging and looking for an explanation of a problem. Otherwise, you can disable many of them. You can use the `#define` directive to create parameterized macros that extend the basic `printf()` functionality. For example, macros can expand to printf()s when needed and to empty statements under other conditions.
 
 The general form for defining a parameterized macro is:
 
-	#define MACRO_NAME(param1, param2, ...)      
-		{body-of-macro}
+```
+#define MACRO_NAME(param1, param2, ...)
+	{body-of-macro}
+```
 
-For example, it is often useful to categorise ``printf()`` statements by severity levels like ‘DEBUG’, ‘WARNING’ and ‘ERROR’. For this, we define levels of severity. Then, each time we compile or run the program, we specify which level we’d like to use. The level we specified is used by our macros in an ``if`` condition. That condition can control the format of the information the macro will print, or whether or not it will print anything at all. This gives us full control of the debug information presented to us every run.
+For example, you can categorize `printf()` statements by severity levels, such as `DEBUG`, `WARNING` and `ERROR`. To do so, define levels of severity. Then, each time you compile or run the program, specify which level you want to use. The macros use the level you specified in an `if` condition. That condition can control the format of the information the macro prints, or whether it prints anything at all. This gives you full control of the debug information presented every run.
 
-Remember that ``printf()`` can take as many parameters as you throw at it. Macros support this functionality: they can be defined with ``...`` to mimic printf()’s behaviour. To learn more about using ``...`` in your code, read about [variadic macros on Wikipedia](http://en.wikipedia.org/wiki/Variadic_macro).
+Remember that `printf()` can take as many parameters as you give it. Macros support this functionality: you can define them with `...` to mimic printf()’s behavior. To learn more about using `...` in your code, read about [variadic macros on Wikipedia](http://en.wikipedia.org/wiki/Variadic_macro).
 
-Here is an example:
+This is an example:
 
 ```c
--- within some header file named something like trace.h --
+// -- within a header file named something like trace.h --
 enum {
 	TRACE_LEVEL_DEBUG,
 	TRACE_LEVEL_WARNING
 };
-/* each time we compile or run the program, 
+/* each time we compile or run the program,
 * we determine what the trace level is.
-* this parameter is available to the macros 
+* this parameter is available to the macros
 * without being explicitly passed to them*/
 
-extern unsigned traceLevel; 
+extern unsigned traceLevel;
 
 ...
 
-// Our first macro is printed if the trace level we selected 
-// is TRACE_LEVEL_DEBUG or above. 	
-// The traceLevel is used in the condition                                            
+// Our first macro prints if the trace level we selected
+// is TRACE_LEVEL_DEBUG or above.
+// The traceLevel is used in the condition
 // and the regular parameters are used in the action that follows the IF
 #define TRACE_DEBUG(formatstring, parameter1, parameter2, ...) \
 	{ if (traceLevel >= TRACE_LEVEL_DEBUG) \
-			{ printf("-D- " formatstring, __VA_ARGS__); } } 
+			{ printf("-D- " formatstring, __VA_ARGS__); } }
 // this will include the parameters we passed above
-	
+
 // we create a different macro for each trace level
 #define TRACE_WARNING(formatstring, parameter1, parameter2, ...) \
 	{ if (traceLevel >= TRACE_LEVEL_WARNING) \
 		{ printf("-W- " formatstring, __VA_ARGS__); } }
 ```
 
-Here’s another example of macro-replacement that allows a formatted ``printf()``. Set ``#define MODULE_NAME "<YourModuleName>"`` before including the code below, and enjoy colourised ``printf()`` tagged with the module name that generated it:
+This is another example of macro-replacement that allows a formatted `printf()`. Set `#define MODULE_NAME "<YourModuleName>"` before including the code below, and enjoy colorized `printf()` tagged with the module name that generated it:
 
 ```c
 #define LOG(x, ...) \
@@ -118,7 +249,7 @@ Here’s another example of macro-replacement that allows a formatted ``printf()
 	MODULE_NAME, ##__VA_ARGS__); fflush(stdout); }
 ```
 
-You can use ``ASSERT()`` to improve error reporting. It will use ``error()`` (a part of the mbed SDK that we reviewed earlier). ``error()`` not only flashes LEDs, it also puts the program into an infinite loop, preventing further operations. This will happen if the ``ASSERT()`` condition is evaluated as FALSE:
+You can use `ASSERT()` to improve error reporting. It uses `error()` (a part of the mbed OS). `error()` flashes LEDs and puts the program into an infinite loop, preventing further operations. This happens if the `ASSERT()` condition is evaluated as FALSE:
 
 ```c
 #define ASSERT(condition, ...)	{ \
@@ -127,23 +258,22 @@ You can use ``ASSERT()`` to improve error reporting. It will use ``error()`` (a 
 	} }
 ```
 
+## Fast circular log buffers based on printf()
 
-##Fast Circular Log Buffers Based on Printf()
+When capturing logs from events that occur in rapid succession, using `printf()` may introduce unacceptable runtime latencies, which might alter the system's behavior or destabilize it. But delays in `printf()` aren’t because of the cost of generating the messages. The biggest cause of delay with `printf()` is actually pushing the logs to the UART. The solution is not to avoid `printf()` but to avoid pushing the logs to the UART while the operation you're debugging is running.
 
-When trying to capture logs from events that occur in rapid succession, using ``printf()`` may introduce unacceptable run-time latencies, which might alter the system's behaviour or destabilise it. But delays in ``printf()`` aren’t because of the cost of generating the messages. The biggest cause of delay with ``printf()`` is actually pushing the logs to the UART. So the obvious solution is not to avoid ``printf()``, but to avoid pushing the logs to the UART while the operation we're debugging is running.
+To avoid pushing during the operation’s run, use `sprintf()` to write the log messages into a ring buffer. The buffer holds the debugging messages in memory until the system is idle. Then you can perform the costly action of sending the information through the UART. In BLE, the system usually idles in `main()` while waiting for events, so use `main()` to transmit.
 
-To avoid pushing during the operation’s run, we use ``sprintf()`` to write the log messages into a ring buffer (we’ll explain what that is in the next paragraph). The buffer holds the debugging messages in memory until the system is idle. Only then will we perform the costly action of sending the information through the UART. In BLE, the system usually idles in ``main()`` while waiting for events, so we’ll use ``main()`` to transmit.
+`sprintf()` assumes a sequential buffer into which to write - it doesn’t wrap strings around the end of the available memory. That means you have to prevent overflows. You can do this by only appending to the tail of the ring buffer if the buffer is at least half empty. In other words, so long as the information already held by the buffer doesn’t exceed the halfway mark, add new information "behind" it. When you reach the halfway point, wrap around the excess information to the beginning (rather than the tail) of the buffer, creating the “ring” of a ring buffer. Half is an arbitrary decision; you can decide to let the buffer get three-quarters full or only one-tenth full.
 
-``sprintf()`` assumes a sequential buffer into which to write - it doesn’t wrap strings around the end of the available memory. That means we have to prevent overflows ourselves. We can do this by deciding that we only append to the tail of the ring buffer if the buffer is at least half empty. In other words, so long as the information already held by the buffer doesn’t exceed the half-way mark, we will add new information "behind" it. When we reach the half-way point, we wrap-around the excess information to the beginning (rather than the tail) of the buffer, creating the “ring” of a ring buffer. Half is an arbitrary decision; you can decide to let the buffer get three-quarters full or only a tenth full.
-
-Here is an example implementation of a ring buffer. We’ve created our own version of a wrapping ``printf()`` using a macro called ``xprintf()``.  Debug messages accumulated using ``xprintf()`` can be read out circularly starting from ``ringBufferTail`` and wrapping around (``ringBufferTail`` + ``HALF_BUFFER_SIZE``). The first message would most likely be garbled because of an overwrite by the most recently appended message:
+This is an example implementation of a ring buffer, which wraps `printf()` using a macro called `xprintf()`. Debug messages accumulated using `xprintf()` can be read circularly starting from `ringBufferTail` and wrapping around (`ringBufferTail` + `HALF_BUFFER_SIZE`). An overwrite by the most recently appended message may garble the first message:
 
 ```c
 #define BUFFER_SIZE 512 /* You need to choose a suitable value here. */
 #define HALF_BUFFER_SIZE (BUFFER_SIZE >> 1)
 
 /* Here's one way of allocating the ring buffer. */
-char ringBuffer[BUFFER_SIZE]; 
+char ringBuffer[BUFFER_SIZE];
 char *ringBufferStart = ringBuffer;
 char *ringBufferTail  = ringBuffer;
 
@@ -151,9 +281,9 @@ void xprintf(const char *format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	size_t largestWritePossible = 
+	size_t largestWritePossible =
 			BUFFER_SIZE - (ringBufferTail - ringBufferStart);
-	int written = 
+	int written =
 			vsnprintf(ringBufferTail, largestWritePossible, format, args);
 	va_end(args);
 
@@ -181,15 +311,22 @@ void xprintf(const char *format, ...)
 
 	/* Is it time to wrap around? */
 	if (ringBufferTail > (ringBufferStart + HALF_BUFFER_SIZE)) {
-		size_t overflow = 
+		size_t overflow =
 			ringBufferTail - (ringBufferStart + HALF_BUFFER_SIZE);
-			memmove(ringBufferStart, ringBufferStart 
+			memmove(ringBufferStart, ringBufferStart
 					+ HALF_BUFFER_SIZE, overflow);
-		ringBufferTail = 
+		ringBufferTail =
 					ringBufferStart + overflow;
 	}
 }
 ```
 
-______
-Copyright © 2015 ARM Ltd. All rights reserved.
+## Video tutorials
+
+Windows:
+
+[![Debugging using printf() calls on Windows](Images/printf4.png)](http://www.youtube.com/watch?v=jAMTXK9HjfU&feature=youtu.be&t=31s)
+
+macOS:
+
+[![Debugging using printf() calls on macOS](Images/printf5.png)](http://www.youtube.com/watch?v=IR8Di53AGSk&feature=youtu.be&t=34s)
