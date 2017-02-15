@@ -90,17 +90,17 @@ Compile this program, and flash it on your development board. You now can inspec
     $ ls /dev/ttyACM*
     /dev/ttyACM0
     ```
-1. Connect to the board by entering: `sudo screen /dev/ttyACM0 9600`.
+1. Connect to the board by entering `sudo screen /dev/ttyACM0 9600`.
 1. Log messages appear.
 1. To exit:
-	1. Press `Ctrl+A`
-	1. Enter `quit`
+	1. Press `Ctrl+A`.
+	1. Enter `quit`.
 
 <span class="notes">**Note:** To avoid using `sudo`, set up a udev rule.</span>
 
 #### Setting the baud rate
 
-By default, the speed at which the microcontroller and your computer communicate (the baud rate) is set to 9,600 baud. This setting fits most use cases, but you can change it by calling the `baud` function on the serial object:
+By default, the speed at which the microcontroller and your computer communicate (the baud rate) is set to 9600 baud. This setting fits most use cases, but you can change it by calling the `baud` function on the serial object:
 
 ```cpp
 #include "mbed.h"

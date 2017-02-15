@@ -22,7 +22,7 @@ To export your project to Visual Studio Code, you can use either the Online Comp
 1. Right click on your project.
 1. Select *Export Program...*.
 1. Under 'Export toolchain', select *Visual Studio Code (GCC ARM)*.
-    * For most targets you can also export to IAR or ARMCC.
+    * For most targets, you can also export to IAR or ARMCC.
 1. Click *Export*, and unpack at a convenient location.
 
 ![Exporting to Visual Studio Code](Images/vscode1.PNG)
@@ -49,7 +49,7 @@ To configure the debugger for your project:
      1. Change `debugServerPath` to point to the location of `openocd`.
      1. Change `debugServerArgs` to include your OpenOCD arguments. For more info, read our [toolchain document](toolchain.md).
 
-<span class="notes">**Note on Windows:** Point the `-file-exec-and-symbols` configuration to the *absolute path* of your .elf file (in the BUILD directory), and escape each `\` four times. F.e.:
+<span class="notes">**Note on Windows:** Point the `-file-exec-and-symbols` configuration to the *absolute path* of your .elf file (in the BUILD directory), and escape each `\` four times:
 
 ```
 C:\\\\Path\\\\to\\\\mbed-os-example-blinky\\\\BUILD\\\\mbed-os-example-blinky.elf
@@ -69,4 +69,4 @@ C:\\\\Path\\\\to\\\\mbed-os-example-blinky\\\\BUILD\\\\mbed-os-example-blinky.el
 
 ![Running the debugger](Images/vscode5.PNG)
 
-<span class="tips">**Tip:** You can use the Debug Console to interact with the device over GDB and use functionality not exposed in the UI. For example, to see the registers, type `-exec info registers`. To put a watch on a memory location, type `-exec watch *0xdeadbeef`.</span>
+<span class="tips">**Tip:** You can use the Debug Console to interact with the device over GDB and use functionality the UI does not expose. For example, to see the registers, type `-exec info registers`. To put a watch on a memory location, type `-exec watch *0xdeadbeef`.</span>

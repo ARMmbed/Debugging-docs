@@ -2,13 +2,13 @@
 
 Most mbed Enabled development boards contain two chips: the target microcontroller and a CMSIS-DAP interface chip. The most common use case of the interface chip is mounting the development board as a USB mass-storage device, making it easy to flash new firmware. However, you can also use this interface chip to debug the target microcontroller without an external debugger, such as a JTAG.
 
-This offers debugging capabilities for stack trace analysis, register dumps and inspection of program execution (breakpoints, watchpoints and so on). When combined with a source-level debugger on the development host, such as the GNU Project Debugger (GDB), SWD offers a rich debugging experience - much more powerful than ``printf()``.
+This offers debugging capabilities for stack trace analysis, register dumps and inspection of program execution (breakpoints, watchpoints and so on). When combined with a source-level debugger on the development host, such as the GNU Project Debugger (GDB), SWD offers a rich debugging experience - much more powerful than `printf()`.
 
 <span class="tips">**Tip:** The CMSIS-DAP interface chip does not have to be on the development board. You can also use it as an off-board solution with the [SWDAP debugging probe](https://developer.mbed.org/teams/mbed/wiki/SWDAP). This is a good solution if you're making a custom board and do not want the added cost (or space required) of an extra interface chip and USB port.</span>
 
 ## Running a debug server
 
-To connect to the debug interface, most boards are supported by either [pyOCD](https://github.com/mbedmicro/pyOCD) or [OpenOCD](http://openocd.org). If the debug interface on your board is classified as 'CMSIS-DAP' or 'DAPLink' (most boards), you can use pyOCD. If not, use OpenOCD.
+To connect to the debug interface, [pyOCD](https://github.com/mbedmicro/pyOCD) and [OpenOCD](http://openocd.org) support most boards. If the debug interface on your board is classified as 'CMSIS-DAP' or 'DAPLink' (most boards), you can use pyOCD. If not, use OpenOCD.
 
 First, make sure you have installed the [GNU ARM Embedded Toolchain](https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update) and added it to your PATH. To verify that you have the correct version installed, open a terminal and run:
 
@@ -50,7 +50,7 @@ A GDB server is now listening at localhost:3333.
 
 ### OpenOCD
 
-If OpenOCD supports your board, first install [OpenOCD](http://openocd.org). OpenOCD cannot automatically detect the connected board, so must determine what configuration you need for your development board. In general, searching for 'chipset openOCD' yields useful results.
+If OpenOCD supports your board, first install [OpenOCD](http://openocd.org). OpenOCD cannot automatically detect the connected board, so you must determine what configuration you need for your development board. In general, searching for 'chipset openOCD' yields useful results.
 
 For example, for the STM32F4-Discovery series, you use:
 
@@ -87,7 +87,7 @@ You can now verify that the debug connection works via GDB. Open another termina
 $ arm-none-eabi-gdb
 ```
 
-In the CLI, type: `target remote localhost:3333`. Verify that GDB connects to your development board.
+In the CLI, type `target remote localhost:3333`. Verify that GDB connects to your development board.
 
 ```
 $ arm-none-eabi-gdb
@@ -103,7 +103,7 @@ Remote debugging using localhost:3333
 You now have set up a debug connection. From here, you can flash debug builds, step through code and use any IDE that supports GDB to debug mbed OS applications. For instructions, see:
 
 1. Producing [debug builds with mbed CLI](debug_builds.md).
-1. Debugging with [Eclipse](Debugging_Eclipse_pyOCD.md)
+1. Debugging with [Eclipse](Debugging_Eclipse_pyOCD.md).
 1. Debugging with [Keil uVision](Keil.md).
 1. Debugging with [Visual Studio Code](vscode.md).
 
@@ -113,6 +113,6 @@ It's possible to send messages from the development board to your computer over 
 
 1. Install [Netcat](https://en.wikipedia.org/wiki/Netcat).
 2. Connect pyOCD or OpenOCD to your board.
-3. Run `nc localhost 4444`
+3. Run `nc localhost 4444`.
 
 <span class="notes">**Note:** uVisor sends most of its messages during startup, so attach Netcat before starting your program.</span>
