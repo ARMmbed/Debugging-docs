@@ -10,7 +10,7 @@ You need to install Visual Studio Code with the C/C++ extensions to begin.
 1. Open Visual Studio Code, and click on the `Extensions` button.
 1. Search for the C/C++ plugin (by Microsoft) and click *Install*.
 
-    ![Installing the C/C++ plugin in Visual Studio Code](Images/vscode2.PNG)
+    ![Installing the C/C++ plugin in Visual Studio Code](Images/vscode2.png)
 1. When prompted, restart the IDE.
 
 ## Exporting a project
@@ -25,7 +25,7 @@ To export your project to Visual Studio Code, you can use either the Online Comp
     * For most targets, you can also export to IAR or ARMCC.
 1. Click *Export*, and unpack at a convenient location.
 
-![Exporting to Visual Studio Code](Images/vscode1.PNG)
+![Exporting to Visual Studio Code](Images/vscode1.png)
 
 ### mbed CLI
 
@@ -56,17 +56,17 @@ C:\\\\Path\\\\to\\\\mbed-os-example-blinky\\\\BUILD\\\\mbed-os-example-blinky.el
 ```
 </span>
 
-![Configuring the debugger](Images/vscode3.PNG)
+![Configuring the debugger](Images/vscode3.png)
 
 ## Debugging your project
 
 1. On the 'Debug' tab, click the *Play* icon.
 
-    ![Starting the debug session](Images/vscode4.PNG)
+    ![Starting the debug session](Images/vscode4.png)
 1. The project builds, and debugging starts when the build succeeds.
     * To see warnings or errors, select *View > Problems*.
 1. Click on the `Debug Console` button to see the debug output. (This is not activated automatically).
 
-![Running the debugger](Images/vscode5.PNG)
+![Running the debugger](Images/vscode5.png)
 
 <span class="tips">**Tip:** You can use the Debug Console to interact with the device over GDB and use functionality the UI does not expose. For example, to see the registers, type `-exec info registers`. To put a watch on a memory location, type `-exec watch *0xdeadbeef`.</span>
