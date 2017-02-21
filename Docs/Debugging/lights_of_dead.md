@@ -1,8 +1,8 @@
 # Lights of dead
 
-![LPC1768 Lights of dead](Images/lights1.gif)
-![LPC11U24 Lights of dead](Images/lights2.gif)
-![FRMD-KL25Z Lights of dead](Images/lights3.gif)
+![LPC1768 Lights of dead](lights1.gif)
+![LPC11U24 Lights of dead](lights2.gif)
+![FRMD-KL25Z Lights of dead](lights3.gif)
 
 *LPC1768, LPC11U24 and FRDM-KL25Z showing their distinctive lights of dead pattern*
 
