@@ -64,9 +64,9 @@ Compile this program, and flash it on your development board. You now can inspec
 1. Click *OK*.
 1. Log messages appear in the main window.
 
-![Selecting the COM port](Images/printf1.PNG)
+![Selecting the COM port](Images/printf1.png)
 
-![Seeing the output over the serial port](Images/printf2.PNG)
+![Seeing the output over the serial port](Images/printf2.png)
 
 <class span="notes">**Note:** Unsure which COM port is used? In the [device manager](http://www.computerhope.com/issues/ch000833.htm), look under the *Ports* section.</span>
 
@@ -124,7 +124,7 @@ If you change the baud rate on the device, you also need to change it on your se
     $ screen /dev/ttyACM0 115200
     ```
 
-![Changing the baud rate](Images/printf3.PNG)
+![Changing the baud rate](Images/printf3.png)
 
 ## Printf()
 
