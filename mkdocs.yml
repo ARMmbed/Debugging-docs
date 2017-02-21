@@ -5,6 +5,7 @@ docs_dir: Docs
 pages:
 - ['index.md','Debugging mbed OS applications']
 - ['Debugging/printf.md','Debugging', 'Debugging with printf() calls']
+- ['Debugging/compile_time.md', 'Debugging', 'Compile time errors']
 - ['Debugging/toolchain.md','Debugging', 'Setting up a local debugging toolchain']
 - ['Debugging/debug_builds.md','Debugging', 'Producing debug builds with mbed CLI']
 - ['Debugging/Keil.md','Debugging', 'Debugging with uVision 5']
