@@ -15,7 +15,7 @@ To export your project to uVision, you can use either the Online Compiler or mbe
 1. Under 'Export toolchain', select *Keil uVision 5*.
 1. Click *Export*, and unpack at a convenient location.
 
-![Exporting using the online compiler](Images/uvision1.PNG)
+![Exporting using the online compiler](Images/uvision1.png)
 
 ### mbed CLI
 
@@ -30,7 +30,7 @@ To export your project to uVision, you can use either the Online Compiler or mbe
 
 The exported project contains a `.uvprojx` file. Double click on this file to open the project in uVision. uVision 5 does not support nested folders in the tree, so find your application source code by looking for a folder with the same name as your project.
 
-![Debugging an mbed OS 5 program in uVision 5](Images/uvision2.PNG)
+![Debugging an mbed OS 5 program in uVision 5](Images/uvision2.png)
 
 To build your project and start a debug session:
 
@@ -38,6 +38,6 @@ To build your project and start a debug session:
 1. When building succeeds, click *Debug > Start/Stop Debug Session*.
 1. If uVision does not connect to your development board, go to *Project > Options for Target > Debug*, and make sure 'CMSIS-DAP Debugger' is selected.
 
-![CMSIS-DAP Debugger options](Images/uvision3.PNG)
+![CMSIS-DAP Debugger options](Images/uvision3.png)
 
 For more information on the CMSIS-DAP Debugger driver in uVision, see the [uVision documentation](http://www.keil.com/support/man/docs/dapdebug/dapdebug_drv_cfg.htm).
