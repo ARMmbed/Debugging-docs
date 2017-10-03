@@ -117,5 +117,5 @@ We build using Make, but you can also use mbed CLI for building from Eclipse:
 1. Go to *Project > Properties > C/C++ Build*.
 1. Remove the check *Use default build command*.
 1. Set *Build command* to `mbed`.
-1. Under *Behavior* > *Build (Incremental build)*, select your mbed CLI build options. For example: `compile -m K64F -t GCC_ARM --profile ${CWD}mbed-os/tools/profiles/debug.json`.
+1. Under *Behavior* > *Build (Incremental build)*, select your mbed CLI build options. For example: `compile -m K64F -t GCC_ARM --profile debug`.
 1. Make sure to update the paths to the `.elf` file in your debug configuration.
